@@ -147,4 +147,4 @@ also used by `scripts/eval/00_allocation_check.py`.
 
 ## Note/Disclaimer
 
-This is a research prototype designed for use with a single host. It runs untrusted exercise workloads in containers that share the host kernel, so a dedicated machine or VM should be used. It is provided as a proof of concept for a service-oriented cyber range and does not represent a final product. Further testing and adjustments are required. Claude (Anthropic) was mainly used for optimising the code of the services and evaluation scripts and on the frontend stucture.
+This is a research prototype designed for use with a single host. It runs untrusted exercise workloads in containers that share the host kernel, so a dedicated machine or VM should be used. It is provided as a proof of concept for a service-oriented cyber range and does not represent a final product. Further testing and adjustments are required. Claude (Anthropic) was mainly used for optimising the code of the services, evaluation scripts, and the frontend structure.
