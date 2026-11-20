@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PlantHex Labs</title>
+  <link rel="icon" type="image/png" href="/images/logo-nb.png" />
+  <link rel="apple-touch-icon" href="/images/logo-nb.png" />
+  <meta name="theme-color" content="#000000" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+
+  <!-- AUTH (login/register) -->
+  <section id="view-login" class="auth-wrap">
+    <div class="card">
+      <header class="brand-header">
+        <img class="brand-logo"
+             src="/images/logo2.png"
+             alt="PlanthexLabs"
+             width="72" height="72"
+             decoding="async" loading="eager" />
+        <div class="brand-text">
+          <span class="brand-mark">PlantHex&nbsp;Labs</span>
+        </div>
+      </header>
+
+      <h1>Operator sign-in</h1>
+      <p class="subtitle">Authenticate to reach the cyber-range control console.</p>
+
+      <form id="login-form" novalidate>
+        <div class="field">
+          <label for="login-username">Username</label>
+          <input id="login-username" name="username" autocomplete="username" required />
+        </div>
+        <div class="field">
+          <label for="login-password">Password</label>
+          <input id="login-password" name="password" type="password" autocomplete="current-password" required />
+        </div>
+        <div class="login-row">
+          <a href="#" id="forgot-link" class="forgot-link">Forgot password?</a>
+        </div>
+        <button class="btn btn-block" type="submit" id="login-btn">Sign in</button>
+        <div id="login-msg" class="msg"></div>
+      </form>
+
+      <p class="alt">No account? <a href="#" data-goto="register">Create one</a></p>
+      <footer class="card-footer mono">© PlantHex Labs · Classified</footer>
+    </div>
+  </section>
+
+  <section id="view-register" class="auth-wrap hidden">
+    <div class="card">
+      <header class="brand-header">
+        <img class="brand-logo"
+             src="/images/logo2.png"
+             alt="PlanthexLabs"
+             width="72" height="72"
+             decoding="async" loading="eager" />
+        <div class="brand-text">
+          <span class="brand-mark">Planthex&nbsp;Labs</span>
+        </div>
+      </header>
+
+      <h1>Create account</h1>
+      <p class="subtitle">New accounts join the range as <strong>players</strong>. Admins can promote later.</p>
+
+      <form id="register-form" novalidate>
+        <div class="field">
+          <label for="reg-username">Username</label>
+          <input id="reg-username" name="username" autocomplete="username" minlength="3" maxlength="64" required />
+        </div>
+        <div class="field">
+          <label for="reg-password">Password</label>
+          <input id="reg-password" name="password" type="password" autocomplete="new-password" minlength="6" required />
+        </div>
+        <div class="field">
+          <label for="reg-secret">Registration secret</label>
+          <input id="reg-secret" name="secret" type="password" autocomplete="off" required />
+        </div>
+        <button class="btn btn-block" type="submit" id="register-btn">Create account</button>
+        <div id="register-msg" class="msg"></div>
+      </form>
+
+      <p class="alt">Already have one? <a href="#" data-goto="login">Sign in</a></p>
+      <footer class="card-footer mono">© PlantHex Labs · classified</footer>
+    </div>
+  </section>
+
+  <!-- PLATFORM SHELL -->
+  <div id="view-platform" class="platform hidden">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <img class="logo-img"
+             src="/images/logo2.png"
+             alt="PlanthexLabs"
+             width="40" height="40"
+             decoding="async" loading="eager" />
+             <span class="label">PlantHex&nbsp;Labs</span>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-label">Platform</div>
+        <div class="nav-item" data-route="dashboard">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+          <span class="label">Dashboard</span>
+        </div>
+        <div class="nav-item" data-route="challenges">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M6 9l3 3-3 3"/><path d="M13 15h5"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg>
+          <span class="label">Challenges</span>
+        </div>
+        <div class="nav-item" data-route="events">
+          <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/><path d="M12 15l1.2 2.4 2.8.4-2 2 .5 2.7-2.5-1.3-2.5 1.3.5-2.7-2-2 2.8-.4z"/></svg>
+          <span class="label">Events</span>
+        </div>
+        <div class="nav-item" data-route="scoreboard">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M5 9a2 2 0 0 1-2-2V5h4"/><path d="M19 9a2 2 0 0 0 2-2V5h-4"/></svg>
+          <span class="label">Scoreboard</span>
+        </div>
+        <div class="nav-item" data-route="teams">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/><circle cx="17" cy="7" r="3"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
+          <span class="label">Teams</span>
+        </div>
+        <div class="nav-item" data-route="announcements">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M3 11l18-6v14L3 13z"/><path d="M11 17v3"/></svg>
+          <span class="label">Announcements</span>
+        </div>
+        <div class="nav-item" data-route="monitoring">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>
+          <span class="label">Monitoring</span>
+        </div>
+        <div class="nav-item" data-route="event-log">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+          <span class="label">Event Log</span>
+        </div>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-label">Account</div>
+        <div class="nav-item" data-route="profile">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg>
+          <span class="label">Profile</span>
+        </div>
+        <div class="nav-item" data-route="users">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21v-2a6 6 0 0 1 6-6h2a6 6 0 0 1 6 6v2"/><circle cx="17" cy="6" r="3"/><path d="M21 14v-1a4 4 0 0 0-4-4"/></svg>
+          <span class="label">Users &amp; Roles</span>
+        </div>
+        <div class="nav-item" data-route="settings">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c0 .68.4 1.28 1 1.51H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span class="label">Settings</span>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="avatar" id="avatar">?</div>
+        <div class="who">
+          <strong id="who-name">—</strong>
+          <span id="who-roles">—</span>
+        </div>
+        <button class="btn btn-ghost" id="logout-btn" type="button" title="Sign out">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        </button>
+      </div>
+    </aside>
+
+    <div class="backdrop" id="backdrop"></div>
+
+    <div class="content">
+      <div class="topbar">
+        <button class="hamburger" id="hamburger" type="button" aria-label="Toggle menu">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+        <img class="topbar-mark"
+             src="/images/logo2.png"
+             alt=""
+             width="22" height="22"
+             decoding="async" loading="eager" />
+        <div class="crumb"> / <strong id="crumb-page">Dashboard</strong></div>
+        <div class="spacer"></div>
+        <button class="bell-btn" id="bell-btn" type="button" title="Announcements" aria-label="Announcements">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+          <span class="bell-dot" id="bell-dot"></span>
+        </button>
+        <span id="token-badge" class="badge ok">token: valid</span>
+      </div>
+
+      <main class="view" id="router-outlet"></main>
+    </div>
+  </div>
+
+  <script type="module" src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+# Generated on first start by scripts/security/gen_secrets.sh / start.sh — never commit
+infrastructure/secrets/
+infrastructure/certs/
+
+# Output of local runs (the runs reported in the paper are in results/)
+scripts/eval/reports/
+scripts/pipeline_runs/
+scripts/security/scans/
+
+# Python / editor
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+.vscode/
+.idea/
+*:Zone.Identifier

@@ -1,0 +1,60 @@
+
+sor/iam-service (debian 13.7)
+=============================
+Total: 0 (CRITICAL: 0)
+
+sor/iam-service: no fixable CRITICAL
+
+sor/events-service (debian 13.7)
+================================
+Total: 0 (CRITICAL: 0)
+
+sor/events-service: no fixable CRITICAL
+
+sor/egress-guard (alpine 3.19.9)
+================================
+Total: 0 (CRITICAL: 0)
+
+sor/egress-guard: no fixable CRITICAL
+
+sor/scenario-service (debian 13.7)
+==================================
+Total: 0 (CRITICAL: 0)
+
+sor/scenario-service: no fixable CRITICAL
+
+sor/iam-service (debian 13.7)
+=============================
+Total: 0 (CRITICAL: 0)
+
+sor/iam-service: no fixable CRITICAL
+
+sor/learning-service (debian 13.7)
+==================================
+Total: 0 (CRITICAL: 0)
+
+sor/learning-service: no fixable CRITICAL
+
+sor/orchestration-service (debian 13.7)
+=======================================
+Total: 0 (CRITICAL: 0)
+
+sor/orchestration-service: no fixable CRITICAL
+
+sor/consumer-portal-service (debian 13.7)
+=========================================
+Total: 0 (CRITICAL: 0)
+
+sor/consumer-portal-service: no fixable CRITICAL
+
+sor/monitoring-service (debian 13.7)
+====================================
+Total: 0 (CRITICAL: 0)
+
+sor/monitoring-service: no fixable CRITICAL
+
+sor/data-logging-service (debian 13.7)
+======================================
+Total: 0 (CRITICAL: 0)
+
+sor/data-logging-service: no fixable CRITICAL

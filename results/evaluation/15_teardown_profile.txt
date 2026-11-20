@@ -1,0 +1,27 @@
+=== Teardown profile, 5 runs (2026-11-13T14:00:42+01:00) ===
+────────────────────────────────────────────────────────────────
+run 1  lab-wireguard  stop  1326 ms  exit=0   null
+run 1  lab-service    stop   448 ms  exit=143 ["sh","-c","sleep infinity"]
+run 1  lab-service    stop   449 ms  exit=143 ["sh","-c","mkdir -p /srv && echo 'FLAG{l4b_smoke_2026}' > /
+run 1  api-remainder    631 ms  (remove stopped containers + network, DB update)
+run 2  lab-wireguard  stop  1189 ms  exit=0   null
+run 2  lab-service    stop   462 ms  exit=143 ["sh","-c","sleep infinity"]
+run 2  lab-service    stop   481 ms  exit=143 ["sh","-c","mkdir -p /srv && echo 'FLAG{l4b_smoke_2026}' > /
+run 2  api-remainder    642 ms  (remove stopped containers + network, DB update)
+run 3  lab-wireguard  stop  1253 ms  exit=0   null
+run 3  lab-service    stop   435 ms  exit=143 ["sh","-c","sleep infinity"]
+run 3  lab-service    stop   451 ms  exit=143 ["sh","-c","mkdir -p /srv && echo 'FLAG{l4b_smoke_2026}' > /
+run 3  api-remainder    588 ms  (remove stopped containers + network, DB update)
+run 4  lab-wireguard  stop  1186 ms  exit=0   null
+run 4  lab-service    stop   472 ms  exit=143 ["sh","-c","sleep infinity"]
+run 4  lab-service    stop   461 ms  exit=143 ["sh","-c","mkdir -p /srv && echo 'FLAG{l4b_smoke_2026}' > /
+run 4  api-remainder    595 ms  (remove stopped containers + network, DB update)
+run 5  lab-wireguard  stop  1191 ms  exit=0   null
+run 5  lab-service    stop   423 ms  exit=143 ["sh","-c","sleep infinity"]
+run 5  lab-service    stop   448 ms  exit=143 ["sh","-c","mkdir -p /srv && echo 'FLAG{l4b_smoke_2026}' > /
+run 5  api-remainder    592 ms  (remove stopped containers + network, DB update)
+────────────────────────────────────────────────────────────────
+mean stop time per container kind (exit 137 = SIGKILL after grace period, i.e. SIGTERM ignored):
+  lab-wireguard  n= 5  mean=  1229 ±   61 ms  exit codes {'0': 5}
+  lab-service    n=10  mean=   453 ±   17 ms  exit codes {'143': 10}
+  api-remainder  n= 5  mean=   610 ±   25 ms  exit codes {'0': 5}

@@ -1,0 +1,8 @@
+=== Redeploy repeatability: K=3, MODE=restart (2026-11-13T14:07:18+01:00) ===
+────────────────────────────────────────────────────────────────
+cycle 1: ready in 87764 ms · containers 17 healthy · catalogue: registry + 8 services passing · prometheus targets 9/9 up · smoke PASS (RESULT: 12 passed, 0 failed)
+cycle 2: ready in 64053 ms · containers 17 healthy · catalogue: registry + 8 services passing · prometheus targets 9/9 up · smoke PASS (RESULT: 12 passed, 0 failed)
+cycle 3: ready in 86835 ms · containers 17 healthy · catalogue: registry + 8 services passing · prometheus targets 9/9 up · smoke PASS (RESULT: 12 passed, 0 failed)
+────────────────────────────────────────────────────────────────
+up → all-ready : n=3  mean=79551 ± 13429 ms  (min=64053  max=87764  median=86835)
+successful cycles (all checks + smoke suite): 3 / 3   [mode=restart]

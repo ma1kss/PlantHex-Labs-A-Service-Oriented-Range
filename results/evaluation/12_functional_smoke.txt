@@ -1,0 +1,15 @@
+=== Functional smoke (2026-11-13T13:57:28+01:00) ===
+PASS  short password rejected (422)
+PASS  human-readable validation msg
+PASS  wrong secret rejected (403)
+PASS  register with secret (201)
+PASS  login works
+PASS  player cannot view instructor profile (403)
+PASS  player cannot revoke solves (403)
+PASS  correct flag accepted
+PASS  solve scored
+PASS  revoke removes the solve
+PASS  challenge unsolved after revoke
+PASS  deleted user off the scoreboard
+────────────────────────────────────────────────────────────────
+RESULT: 12 passed, 0 failed

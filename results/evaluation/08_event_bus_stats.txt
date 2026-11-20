@@ -1,0 +1,10 @@
+=== RabbitMQ event bus (2026-11-13T13:57:27+01:00) ===
+QUEUE                                   READY  UNACK CONSUMERS  IN msg/s OUT msg/s
+data-logging.capture                        0      0         1      0.60      0.60
+events-service.log                          0      0         1      0.60      0.60
+learning-service.scoring                    0      0         1      0.20      0.20
+monitoring.security-alerts                  0      0         1      0.00      0.00
+portal.sessions                             0      0         1      0.20      0.20
+
+WARNING queue backlog >100: (none)
+queues without consumers  : (none)

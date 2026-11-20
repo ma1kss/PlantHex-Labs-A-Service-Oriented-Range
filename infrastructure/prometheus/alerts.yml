@@ -1,0 +1,64 @@
+groups:
+
+  - name: sor-performance
+    rules:
+      - alert: SorServiceDown
+        expr: up{job="sor-services"} == 0
+        for: 30s
+        labels: {severity: critical, category: availability}
+        annotations:
+          summary: "{{ $labels.service }} is not answering its metrics endpoint"
+
+      - alert: SorServiceMissing
+        # A stopped service deregisters from Consul and disappears from
+        # discovery instead of reporting up == 0.
+        expr: (count(up{job="sor-services"} == 1) or vector(0)) < 8
+        for: 30s
+        labels: {severity: critical, category: availability}
+        annotations:
+          summary: "only {{ $value }} of 8 platform services are registered and up"
+
+      - alert: SorHighErrorRate
+        expr: |
+          sum by (service) (rate(http_requests_total{status=~"5.."}[2m]))
+            / clamp_min(sum by (service) (rate(http_requests_total[2m])), 0.001) > 0.05
+        for: 1m
+        labels: {severity: warning, category: performance}
+        annotations:
+          summary: "{{ $labels.service }}: {{ $value | humanizePercentage }} of requests fail with 5xx"
+
+      - alert: SorHighLatency
+        # Interactive endpoints only: lab provisioning and image builds are
+        # long by design and are excluded.
+        expr: |
+          histogram_quantile(0.95, sum by (service, le) (rate(
+            http_request_duration_seconds_bucket{handler!~".*session.*|.*stream.*|.*launches.*|.*challenges$|.*login.*|/{path:path}"}[5m]))) > 0.5
+        for: 2m
+        labels: {severity: warning, category: performance}
+        annotations:
+          summary: "{{ $labels.service }}: p95 latency {{ $value | humanizeDuration }} (> 500 ms)"
+
+  - name: sor-security
+    rules:
+      - alert: SorAuthFailureBurst
+        # Many refused requests in a short time: credential stuffing, token
+        # forging or a client probing routes it is not allowed to use.
+        expr: sum by (service) (rate(http_requests_total{status=~"401|403"}[1m])) > 0.5
+        for: 30s
+        labels: {severity: warning, category: security}
+        annotations:
+          summary: "{{ $labels.service }}: {{ $value | humanize }} refused requests/s (401/403)"
+
+      - alert: SorForgedBusMessage
+        # Event security dropped a message that was unsigned, signed with an
+        # unknown key, or failed decryption: someone wrote to the broker.
+        # The counter series is created on the first rejection, so increase()
+        # alone misses it (no earlier sample); a series that did not exist
+        # 5 minutes ago therefore also fires.
+        expr: |
+          sum by (service, reason) (increase(sor_events_rejected_total[5m])) > 0
+            or
+          sum by (service, reason) (sor_events_rejected_total unless sor_events_rejected_total offset 5m) > 0
+        labels: {severity: critical, category: security}
+        annotations:
+          summary: "{{ $labels.service }} rejected bus messages ({{ $labels.reason }})"

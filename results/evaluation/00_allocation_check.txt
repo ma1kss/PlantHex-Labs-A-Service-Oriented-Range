@@ -1,0 +1,36 @@
+=== Allocation check (Table 1) ===
+requirements: 49 functional + 27 security = 76
+every requirement allocated  : yes
+every function has a req.    : yes
+allocated to >1 function     : 8 (SR-FR-SL-14, SR-FR-BPL-22, SR-FR-BPL-23, SR-FR-IFL-42, SR-FR-GL-47, SEC-003, SEC-016, SEC-027)
+allocated only to F19        : 3 (SR-FR-IL-35, SEC-009, SEC-015)
+
+implementation coverage      : 18/19 functions realised (14 fully, 4 in part); not implemented: F19
+
+=== Satisfaction (S satisfied · P partly · N not · NV not verified) ===
+functional n=49  S=30  P=14  N= 5  NV= 0
+security   n=27  S=12  P=12  N= 2  NV= 1
+all        n=76  S=42  P=26  N= 7  NV= 1
+
+per function (requirements: S/P/N/NV):
+  F01 [F] n= 7  S=2 P=4 N=1 NV=0
+  F02 [F] n= 5  S=3 P=2 N=0 NV=0
+  F03 [P] n= 3  S=3 P=0 N=0 NV=0
+  F04 [F] n= 9  S=6 P=2 N=1 NV=0
+  F05 [F] n= 5  S=4 P=1 N=0 NV=0
+  F06 [F] n= 3  S=2 P=1 N=0 NV=0
+  F07 [F] n= 1  S=1 P=0 N=0 NV=0
+  F08 [P] n= 4  S=3 P=1 N=0 NV=0
+  F09 [P] n= 3  S=3 P=0 N=0 NV=0
+  F10 [F] n= 2  S=2 P=0 N=0 NV=0
+  F11 [F] n= 6  S=4 P=2 N=0 NV=0
+  F12 [F] n= 3  S=2 P=1 N=0 NV=0
+  F13 [F] n= 4  S=3 P=1 N=0 NV=0
+  F14 [F] n= 3  S=1 P=2 N=0 NV=0
+  F15 [F] n= 1  S=1 P=0 N=0 NV=0
+  F16 [F] n= 6  S=2 P=3 N=0 NV=1
+  F17 [P] n= 8  S=3 P=3 N=2 NV=0
+  F18 [F] n= 9  S=4 P=5 N=0 NV=0
+  F19 [-] n= 3  S=0 P=0 N=3 NV=0
+
+allocation invariants: OK

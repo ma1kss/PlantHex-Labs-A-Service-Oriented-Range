@@ -1,0 +1,43 @@
+=== Lab provisioning, 30 runs (2026-11-13T13:54:19+01:00) ===
+challenge: Recon Lab (2 services, id 1db73f99)
+────────────────────────────────────────────────────────────────
+run 1: launch 2961 ms · in-lab fetch 236ms · via VPN tunnel 253ms · teardown 1831 ms
+run 2: launch 3318 ms · in-lab fetch 251ms · via VPN tunnel 263ms · teardown 1704 ms
+run 3: launch 2929 ms · in-lab fetch 252ms · via VPN tunnel 251ms · teardown 1753 ms
+run 4: launch 2957 ms · in-lab fetch 249ms · via VPN tunnel 251ms · teardown 1766 ms
+run 5: launch 2971 ms · in-lab fetch 259ms · via VPN tunnel 237ms · teardown 1784 ms
+run 6: launch 3228 ms · in-lab fetch 248ms · via VPN tunnel 249ms · teardown 1738 ms
+run 7: launch 3086 ms · in-lab fetch 232ms · via VPN tunnel 250ms · teardown 1713 ms
+run 8: launch 2887 ms · in-lab fetch 289ms · via VPN tunnel 236ms · teardown 1790 ms
+run 9: launch 3177 ms · in-lab fetch 244ms · via VPN tunnel 244ms · teardown 1830 ms
+run 10: launch 2946 ms · in-lab fetch 248ms · via VPN tunnel 261ms · teardown 1910 ms
+run 11: launch 3214 ms · in-lab fetch 252ms · via VPN tunnel 247ms · teardown 1841 ms
+run 12: launch 3030 ms · in-lab fetch 249ms · via VPN tunnel 261ms · teardown 1746 ms
+run 13: launch 3014 ms · in-lab fetch 233ms · via VPN tunnel 271ms · teardown 1743 ms
+run 14: launch 2957 ms · in-lab fetch 247ms · via VPN tunnel 244ms · teardown 1796 ms
+run 15: launch 2924 ms · in-lab fetch 255ms · via VPN tunnel 263ms · teardown 1796 ms
+run 16: launch 2896 ms · in-lab fetch 254ms · via VPN tunnel 242ms · teardown 1722 ms
+run 17: launch 2959 ms · in-lab fetch 241ms · via VPN tunnel 276ms · teardown 1759 ms
+run 18: launch 3202 ms · in-lab fetch 246ms · via VPN tunnel 237ms · teardown 1732 ms
+run 19: launch 2946 ms · in-lab fetch 240ms · via VPN tunnel 258ms · teardown 1782 ms
+run 20: launch 2931 ms · in-lab fetch 255ms · via VPN tunnel 235ms · teardown 1843 ms
+run 21: launch 3033 ms · in-lab fetch 241ms · via VPN tunnel 250ms · teardown 1873 ms
+run 22: launch 2927 ms · in-lab fetch 269ms · via VPN tunnel 251ms · teardown 1691 ms
+run 23: launch 2906 ms · in-lab fetch 268ms · via VPN tunnel 236ms · teardown 1837 ms
+run 24: launch 2962 ms · in-lab fetch 252ms · via VPN tunnel 252ms · teardown 1938 ms
+run 25: launch 2931 ms · in-lab fetch 276ms · via VPN tunnel 266ms · teardown 1808 ms
+run 26: launch 2953 ms · in-lab fetch 262ms · via VPN tunnel 236ms · teardown 1733 ms
+run 27: launch 2927 ms · in-lab fetch 233ms · via VPN tunnel 240ms · teardown 1774 ms
+run 28: launch 2963 ms · in-lab fetch 261ms · via VPN tunnel 253ms · teardown 1772 ms
+run 29: launch 2963 ms · in-lab fetch 249ms · via VPN tunnel 231ms · teardown 1768 ms
+run 30: launch 2996 ms · in-lab fetch 246ms · via VPN tunnel 266ms · teardown 1753 ms
+────────────────────────────────────────────────────────────────
+launch → running : n=30  mean=3003 ± 112 ms  (min=2887  max=3318  median=2960)
+in-lab fetch     : n=30  mean=251 ± 13 ms  (min=232  max=289  median=249)
+first req via VPN: n=30  mean=250 ± 12 ms  (min=231  max=276  median=250)
+launch p50/p95   : n=30  min=2887.0ms  p50=2960.0ms  p95=3221.7ms  p99=3291.9ms  max=3318.0ms  mean=3003.1ms
+teardown p50/p95 : n=30  min=1691.0ms  p50=1773.0ms  p95=1893.3ms  p99=1929.9ms  max=1938.0ms  mean=1784.2ms
+teardown         : n=30  mean=1784 ± 59 ms  (min=1691  max=1938  median=1773)
+launch failures  : 0 / 30
+leaked containers: 0  (0 = clean teardown)
+leaked lab nets  : 0  (0 = all networks/subnets returned)

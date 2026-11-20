@@ -1,0 +1,110 @@
+=== Scoring pipeline lag, 100 runs (challenge=1db73f99-8c5f-4735-ac0f-db203681f82e) (2026-11-13T13:52:08+01:00) ===
+────────────────────────────────────────────────────────────────
+run 1: submit HTTP round-trip 106 ms · submit→score-visible 213 ms
+run 2: submit HTTP round-trip 114 ms · submit→score-visible 223 ms
+run 3: submit HTTP round-trip 119 ms · submit→score-visible 247 ms
+run 4: submit HTTP round-trip 93 ms · submit→score-visible 204 ms
+run 5: submit HTTP round-trip 124 ms · submit→score-visible 262 ms
+run 6: submit HTTP round-trip 104 ms · submit→score-visible 205 ms
+run 7: submit HTTP round-trip 105 ms · submit→score-visible 211 ms
+run 8: submit HTTP round-trip 111 ms · submit→score-visible 208 ms
+run 9: submit HTTP round-trip 102 ms · submit→score-visible 195 ms
+run 10: submit HTTP round-trip 96 ms · submit→score-visible 190 ms
+run 11: submit HTTP round-trip 102 ms · submit→score-visible 197 ms
+run 12: submit HTTP round-trip 93 ms · submit→score-visible 188 ms
+run 13: submit HTTP round-trip 104 ms · submit→score-visible 205 ms
+run 14: submit HTTP round-trip 106 ms · submit→score-visible 198 ms
+run 15: submit HTTP round-trip 128 ms · submit→score-visible 242 ms
+run 16: submit HTTP round-trip 103 ms · submit→score-visible 205 ms
+run 17: submit HTTP round-trip 99 ms · submit→score-visible 203 ms
+run 18: submit HTTP round-trip 98 ms · submit→score-visible 202 ms
+run 19: submit HTTP round-trip 94 ms · submit→score-visible 190 ms
+run 20: submit HTTP round-trip 107 ms · submit→score-visible 199 ms
+run 21: submit HTTP round-trip 98 ms · submit→score-visible 196 ms
+run 22: submit HTTP round-trip 91 ms · submit→score-visible 184 ms
+run 23: submit HTTP round-trip 101 ms · submit→score-visible 200 ms
+run 24: submit HTTP round-trip 100 ms · submit→score-visible 196 ms
+run 25: submit HTTP round-trip 94 ms · submit→score-visible 186 ms
+run 26: submit HTTP round-trip 98 ms · submit→score-visible 191 ms
+run 27: submit HTTP round-trip 97 ms · submit→score-visible 191 ms
+run 28: submit HTTP round-trip 99 ms · submit→score-visible 189 ms
+run 29: submit HTTP round-trip 97 ms · submit→score-visible 188 ms
+run 30: submit HTTP round-trip 99 ms · submit→score-visible 192 ms
+run 31: submit HTTP round-trip 91 ms · submit→score-visible 185 ms
+run 32: submit HTTP round-trip 104 ms · submit→score-visible 222 ms
+run 33: submit HTTP round-trip 98 ms · submit→score-visible 190 ms
+run 34: submit HTTP round-trip 98 ms · submit→score-visible 190 ms
+run 35: submit HTTP round-trip 95 ms · submit→score-visible 189 ms
+run 36: submit HTTP round-trip 92 ms · submit→score-visible 184 ms
+run 37: submit HTTP round-trip 95 ms · submit→score-visible 190 ms
+run 38: submit HTTP round-trip 97 ms · submit→score-visible 192 ms
+run 39: submit HTTP round-trip 92 ms · submit→score-visible 199 ms
+run 40: submit HTTP round-trip 101 ms · submit→score-visible 197 ms
+run 41: submit HTTP round-trip 94 ms · submit→score-visible 186 ms
+run 42: submit HTTP round-trip 96 ms · submit→score-visible 188 ms
+run 43: submit HTTP round-trip 98 ms · submit→score-visible 194 ms
+run 44: submit HTTP round-trip 99 ms · submit→score-visible 193 ms
+run 45: submit HTTP round-trip 93 ms · submit→score-visible 182 ms
+run 46: submit HTTP round-trip 96 ms · submit→score-visible 189 ms
+run 47: submit HTTP round-trip 99 ms · submit→score-visible 194 ms
+run 48: submit HTTP round-trip 93 ms · submit→score-visible 186 ms
+run 49: submit HTTP round-trip 113 ms · submit→score-visible 212 ms
+run 50: submit HTTP round-trip 105 ms · submit→score-visible 204 ms
+run 51: submit HTTP round-trip 93 ms · submit→score-visible 190 ms
+run 52: submit HTTP round-trip 94 ms · submit→score-visible 187 ms
+run 53: submit HTTP round-trip 102 ms · submit→score-visible 194 ms
+run 54: submit HTTP round-trip 97 ms · submit→score-visible 190 ms
+run 55: submit HTTP round-trip 101 ms · submit→score-visible 195 ms
+run 56: submit HTTP round-trip 96 ms · submit→score-visible 188 ms
+run 57: submit HTTP round-trip 101 ms · submit→score-visible 208 ms
+run 58: submit HTTP round-trip 97 ms · submit→score-visible 188 ms
+run 59: submit HTTP round-trip 96 ms · submit→score-visible 191 ms
+run 60: submit HTTP round-trip 91 ms · submit→score-visible 183 ms
+run 61: submit HTTP round-trip 116 ms · submit→score-visible 204 ms
+run 62: submit HTTP round-trip 95 ms · submit→score-visible 188 ms
+run 63: submit HTTP round-trip 94 ms · submit→score-visible 193 ms
+run 64: submit HTTP round-trip 94 ms · submit→score-visible 189 ms
+run 65: submit HTTP round-trip 97 ms · submit→score-visible 194 ms
+run 66: submit HTTP round-trip 91 ms · submit→score-visible 186 ms
+run 67: submit HTTP round-trip 92 ms · submit→score-visible 182 ms
+run 68: submit HTTP round-trip 93 ms · submit→score-visible 192 ms
+run 69: submit HTTP round-trip 96 ms · submit→score-visible 187 ms
+run 70: submit HTTP round-trip 94 ms · submit→score-visible 187 ms
+run 71: submit HTTP round-trip 94 ms · submit→score-visible 192 ms
+run 72: submit HTTP round-trip 95 ms · submit→score-visible 184 ms
+run 73: submit HTTP round-trip 96 ms · submit→score-visible 196 ms
+run 74: submit HTTP round-trip 101 ms · submit→score-visible 191 ms
+run 75: submit HTTP round-trip 93 ms · submit→score-visible 186 ms
+run 76: submit HTTP round-trip 94 ms · submit→score-visible 187 ms
+run 77: submit HTTP round-trip 95 ms · submit→score-visible 187 ms
+run 78: submit HTTP round-trip 98 ms · submit→score-visible 188 ms
+run 79: submit HTTP round-trip 95 ms · submit→score-visible 189 ms
+run 80: submit HTTP round-trip 96 ms · submit→score-visible 189 ms
+run 81: submit HTTP round-trip 96 ms · submit→score-visible 189 ms
+run 82: submit HTTP round-trip 107 ms · submit→score-visible 213 ms
+run 83: submit HTTP round-trip 95 ms · submit→score-visible 197 ms
+run 84: submit HTTP round-trip 95 ms · submit→score-visible 190 ms
+run 85: submit HTTP round-trip 98 ms · submit→score-visible 194 ms
+run 86: submit HTTP round-trip 96 ms · submit→score-visible 188 ms
+run 87: submit HTTP round-trip 96 ms · submit→score-visible 191 ms
+run 88: submit HTTP round-trip 93 ms · submit→score-visible 186 ms
+run 89: submit HTTP round-trip 97 ms · submit→score-visible 195 ms
+run 90: submit HTTP round-trip 98 ms · submit→score-visible 202 ms
+run 91: submit HTTP round-trip 94 ms · submit→score-visible 186 ms
+run 92: submit HTTP round-trip 95 ms · submit→score-visible 191 ms
+run 93: submit HTTP round-trip 95 ms · submit→score-visible 188 ms
+run 94: submit HTTP round-trip 89 ms · submit→score-visible 185 ms
+run 95: submit HTTP round-trip 88 ms · submit→score-visible 182 ms
+run 96: submit HTTP round-trip 92 ms · submit→score-visible 184 ms
+run 97: submit HTTP round-trip 95 ms · submit→score-visible 191 ms
+run 98: submit HTTP round-trip 102 ms · submit→score-visible 204 ms
+run 99: submit HTTP round-trip 95 ms · submit→score-visible 186 ms
+run 100: submit HTTP round-trip 94 ms · submit→score-visible 187 ms
+────────────────────────────────────────────────────────────────
+submit acknowledged : n=100  min=88.0ms  p50=96.0ms  p95=113.0ms  p99=124.0ms  max=128.0ms  mean=98.3ms
+                      n=100  mean=98 ± 7 ms  (min=88  max=128  median=96)
+score visible       : n=100  min=182.0ms  p50=191.0ms  p95=213.4ms  p99=247.2ms  max=262.0ms  mean=195.0ms
+                      n=100  mean=195 ± 13 ms  (min=182  max=262  median=191)
+not scored in 10 s  : 0 / 100
+note: score-visible is polled (~50 ms sleep + one HTTP round trip per poll),
+      so it over-estimates the true pipeline lag by up to one poll interval.

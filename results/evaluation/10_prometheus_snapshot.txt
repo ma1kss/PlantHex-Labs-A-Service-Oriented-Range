@@ -1,0 +1,38 @@
+=== Prometheus snapshot (2026-11-13T13:57:27+01:00) ===
+── scrape targets up (1 = healthy) ──
+  consumer-portal-service                                         1.0000
+  data-logging-service                                            1.0000
+  events-service                                                  1.0000
+  iam-service                                                     1.0000
+  learning-service                                                1.0000
+  monitoring-service                                              1.0000
+  orchestration-service                                           1.0000
+  scenario-service                                                1.0000
+  prometheus                                                      1.0000
+
+── request rate by service (req/s, 5m) ──
+  consumer-portal-service                                         2.0018
+  data-logging-service                                            0.0000
+  events-service                                                  0.0000
+  iam-service                                                     1.1027
+  learning-service                                                0.2998
+  monitoring-service                                              0.0000
+  orchestration-service                                           0.0000
+  scenario-service                                                0.5978
+
+── 5xx error rate by service (req/s, 5m) ──
+  (no data)
+
+── p95 request latency by service (s, 5m) ──
+  consumer-portal-service                                         1.0000
+  data-logging-service                                            nan
+  events-service                                                  nan
+  iam-service                                                     0.8769
+  learning-service                                                0.0950
+  monitoring-service                                              nan
+  orchestration-service                                           nan
+  scenario-service                                                1.0000
+
+── in-progress requests by service ──
+  (no data)
+

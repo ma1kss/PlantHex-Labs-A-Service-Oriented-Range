@@ -1,0 +1,39 @@
+=== Service health (2026-11-13T13:50:27+01:00) ===
+────────────────────────────────────────────────────────────────
+SERVICE          HEALTH                       READY   
+iam              HTTP 200                     ok      
+scenario         HTTP 200                     ok      
+events           HTTP 200                     ok      
+monitoring       HTTP 200                     ok      
+data             HTTP 200                     ok      
+learning         HTTP 200                     ok      
+orchestration    HTTP 200                     ok      
+portal (edge)    HTTP 200                    
+────────────────────────────────────────────────────────────────
+Consul catalog (via edge):
+consul, consumer-portal-service, data-logging-service, events-service, iam-service, learning-service, monitoring-service, orchestration-service, scenario-service
+────────────────────────────────────────────────────────────────
+Container states:
+sor_consul	Up 40 minutes (healthy)
+sor_data	Up 3 minutes (healthy)
+sor_db_init	Exited (0) 3 minutes ago
+sor_docker_proxy	Up 40 minutes
+sor_egress_guard	Up 40 minutes
+sor_events	Up 3 minutes (healthy)
+sor_grafana	Up 40 minutes
+sor_iam	Up 3 minutes (healthy)
+sor_learning	Up 3 minutes (healthy)
+sor_monitoring	Up 3 minutes (healthy)
+sor_opensearch	Up 40 minutes (healthy)
+sor_orchestration	Up 3 minutes (healthy)
+sor_portainer	Up 40 minutes
+sor_portal	Up 3 minutes (healthy)
+sor_postgres	Up 40 minutes (healthy)
+sor_prometheus	Up 40 minutes (healthy)
+sor_rabbit_init	Exited (0) 3 minutes ago
+sor_rabbitmq	Up 40 minutes (healthy)
+sor_scenario	Up 3 minutes (healthy)
+────────────────────────────────────────────────────────────────
+Unhealthy / restarting containers (empty = good):
+sor_rabbit_init	Exited (0) 3 minutes ago
+sor_db_init	Exited (0) 3 minutes ago

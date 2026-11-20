@@ -1,0 +1,58 @@
+=== Security & data controls (2026-11-13T14:01:42+01:00) ===
+────────────────────────────────────────────────────────────────
+H. forged event injected into the broker
+    broker accepted the publish: {"routed":true}
+  PASS  IL-34/SEC-004: forged 'correct flag' event did not score (solve_count=0)
+  PASS  IL-34: every consumer of the key dropped and counted it (sor_events_rejected_total 2 → 5)
+  PASS  SEC-014: alert SorForgedBusMessage became active at 2026-11-13T13:01:55 (injection 2026-11-13T13:01:43), visible 26 s later
+
+I. audit archive hash chain
+    records=2228 documented_deletions=4 unchained=0 intact=True
+  PASS  SEC-012: hash chain intact over the whole archive
+  PASS  SEC-012: direct edit of record seq 1 in the store detected (seq 1: content modified)
+  PASS  SEC-012: chain verifies again after the original record was restored
+  PASS  SEC-012/SEC-018: an administrator's deletion is itself recorded; chain still verifies (5 documented)
+
+J. alerting on a service outage
+  PASS  QoS-41: SorServiceMissing firing 65 s after the service stopped ("only 7 of 8 platform services are registered and up")
+  PASS  QoS-41: alert resolved 28 s after restart
+  PASS  QoS-41/SEC-013: firing and resolved alerts archived (24 monitoring.alert.* records)
+
+K. metrics snapshots
+  PASS  IFL-42: 57 per-service metric snapshots stored next to logs and events
+
+L. ingest and export
+  PASS  SEC-004: trainee cannot write into the archive (HTTP 403)
+  PASS  SEC-013: admin record attributed to 'direct:charon', server timestamp (claimed 2020 kept only as a field)
+  PASS  IFL-44: XML export is well-formed (605 records; CSV/JSON/NDJSON also offered)
+  PASS  SEC-017: exports are recorded in the tamper-evident archive (17 export records)
+
+M. flags at rest
+  PASS  SEC-005: 2/2 stored flags encrypted (Fernet); administrator can still recover them
+
+N. database roles
+  PASS  SEC-008: svc_learning↛users, svc_iam↛solves, svc_scenario↛participants denied; own tables readable (2 solves)
+
+O. Docker API exposure of Scenario Management
+  PASS  SEC-008: proxy allows containers (200) but refuses volumes/system/exec/secrets/swarm (403)
+  PASS  SEC-008: Scenario Management holds no Docker socket
+
+S. broker accounts
+  PASS  SEC-008: svc_learning broker rights: own queue=allowed, other service's queue=refused, create a new queue=refused, publish to exchange=allowed
+  PASS  SEC-008: default guest broker account removed (HTTP 401)
+
+P. lab definition controls
+  PASS  SEC-027: lab definition with privileged rejected (Service 'a': 'privileged' is not allowed in a lab definition.)
+  PASS  SEC-027: lab definition with host mount rejected (Service 'a': 'volumes' is not allowed in a lab definition.)
+  PASS  SEC-027: lab definition with host network rejected (Service 'a': 'network_mode' is not allowed in a lab definition.)
+  PASS  SEC-027: lab definition with SYS_ADMIN cap rejected (Service 'a': capabilities SYS_ADMIN are not allowed (allowed: AUDIT_WR)
+  PASS  SEC-027: designer may set user=1000:1000, read_only, cap_add=[NET_RAW]
+
+Q. challenge deletion
+  PASS  IFL-43: solve+points removed when the challenge was deleted (solves/points 1/30 → 0/0)
+
+R. exercise enrolment
+  PASS  BPL-23/F07: trainee enrolled in exercise 32365495 as team red-1, role red; unknown role refused
+  PASS  F07: enrolments removed with the exercise
+────────────────────────────────────────────────────────────────
+SUMMARY: 23 passed, 0 failed (part P lines printed separately)

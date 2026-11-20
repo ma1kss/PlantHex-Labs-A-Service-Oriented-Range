@@ -1,0 +1,77 @@
+id,name,functions,verdict,evidence
+SR-FR-OSL-01,Provide runtime infrastructure for hosting services,F18,S,"all 17 platform containers running and healthy (01, 16)"
+SR-FR-OSL-02,Support virtualization platforms,F18,P,container virtualisation (Docker) only; no hypervisor support (17)
+SR-FR-OSL-03,Manage physical and cloud-based infrastructure resources,F18,P,single physical/WSL2 host; no cloud resource management (17)
+SR-FR-OSL-04,Provide network infrastructure (physical/virtual networks),F18,S,control-plane bridge + per-instance bridges created/removed (05; 14)
+SR-FR-OSL-05,Ensure resource isolation and sandboxing,F04,S,"no cross-instance, control-plane, host or internet reachability from laboratories, VPN or challenges (14); capabilities dropped, no privilege escalation, limits, minimal init (17)"
+SR-FR-OSL-06,Support legacy system integration and databases,F18,P,PostgreSQL + OpenSearch stores; no legacy-system integration
+SR-FR-SCL-07,Deploy and manage virtual machines and containers,F04,P,containers only; no VM driver (17)
+SR-FR-SCL-08,Support configuration management tools,F18,P,declarative Compose specification; no configuration-management tool (Ansible etc.)
+SR-FR-SCL-09,Provide middleware components for service execution,F18,S,RabbitMQ + Consul + shared FastAPI library running (01; 08)
+SR-FR-SCL-10,Manage network components (firewalls/routers/switches),F04,P,per-instance bridge + NAT in WireGuard node; no firewall/router/switch appliances (17)
+SR-FR-SCL-11,Enable dynamic provisioning/de-provisioning of assets,F04,S,30/30 launch and teardown cycles; no leaked containers or networks (05)
+SR-FR-SCL-12,Enable automated deployment pipelines,F18,S,"deployment pipeline: static checks, secrets, build, vulnerability gate, deployment, readiness gate, functional and authorisation probes; passed end to end (P)"
+SR-FR-SL-13,Provide resource provisioning service via standardized APIs,F04,S,REST + OpenAPI 3 on 7/7 services; provisioning via POST /scenario/challenges/{id}/session (17)
+SR-FR-SL-14,Expose scenario deployment and management service,F03;F05,S,Scenario Management CRUD + session lifecycle (12; 05)
+SR-FR-SL-15,Provide identity and access management service (IAM),F01,S,"IAM service; functional suite and authorisation probe (12, 13)"
+SR-FR-SL-16,Offer monitoring and analytics service,F08,S,Monitoring service + Prometheus/Grafana (10; 17)
+SR-FR-SL-17,Provide data collection and logging service,F11,S,Data & Logging consumer archives events (08; 17)
+SR-FR-SL-18,Implement service registry and discovery mechanism,F15,S,Consul catalogue lists 8 services + registry; portal resolves via registry (01; 16)
+SR-FR-SL-19,Provide orchestration service for component coordination,F06,S,Orchestration launches/teardown compose IAM/Scenario/Monitoring (12)
+SR-FR-SL-20,Support event handling and notification service,F13,S,topic exchange + durable queues + announcements archived (08; 17)
+SR-FR-BPL-21,Orchestrate end-to-end cyber exercise workflows,F06,P,per-instance launch/teardown workflow; no exercise-level workflow (cohort scheduling/enrolment/debrief)
+SR-FR-BPL-22,Support scenario lifecycle management (design/deploy/execute/evaluate),F03;F05;F10,S,define (upload) → deploy → execute → evaluate (flag scoring) (05; 12; 04)
+SR-FR-BPL-23,Manage participant registration and team assignment,F07;F10,S,"registration, team assignment and per-exercise enrolment with team and red/blue/white role (17; 18 R)"
+SR-FR-CL-24,Provide unified web-based user interface for all actors,F16,S,single SPA behind the TLS edge (02)
+SR-FR-CL-25,Support role-based dashboards,F16,S,role-dependent views for trainee/instructor/admin (17)
+SR-FR-CL-26,Support multi-device access,F16,P,viewport meta + media queries; not tested on devices (17)
+SR-FR-CL-27,Provision of API gateways for human interfaces and external tools,F14,S,Consumer & Portal edge proxies all 7 services with edge auth (02; 13)
+SR-FR-CL-28,Offer self-service scenario creation and management interface,F03,S,instructors create/edit challenges and lab compose files in the UI (12; 13)
+SR-FR-CL-29,Enable collaboration tools,F16,P,announcements + teams only; no chat/shared workspace
+SR-FR-CL-30,Provide real-time exercise monitoring interface,F16,P,live WebSocket event feed + monitoring page; no in-instance telemetry (17)
+SR-FR-IL-31,Middleware for communication between services/external systems/protocol mediation,F14,P,gateway + broker between services; no external-system mediation
+SR-FR-IL-32,Support multiple communication patterns (pub-sub/request-response/queue),F13,S,request-response via edge; topic exchange; durable queues (02; 08; 17)
+SR-FR-IL-33,Provide protocol conversion and mediation through ESB,F04,N,no ESB / protocol conversion component (17)
+SR-FR-IL-34,Implement message-level encryption and digital signatures,F13,S,every event AES-256-GCM encrypted and Ed25519-signed by its publisher; forged unsigned event injected into the broker dropped by all consumers (18 H)
+SR-FR-IL-35,Enable integration with external systems and federated ranges,F19,N,F19 not implemented
+SR-FR-QoS-36,Monitor service performance and availability,F08,S,Prometheus scrapes all services; monitoring summary (10; 17)
+SR-FR-QoS-37,Enforce security policies (authentication/authorization/encryption),F02,P,"authentication and authorisation enforced on all 81 routes (13); TLS at the edge and encrypted events (09, 18 H); service-to-service HTTP without TLS"
+SR-FR-QoS-38,Support multi-factor authentication (MFA),F01,N,multi-factor authentication not provided (17)
+SR-FR-QoS-39,Support intrusion detection and prevention,F08,P,"application-level detection/prevention: login lockout after 5 failures (13 G), alerts on 401/403 bursts and forged bus messages; no network IDS"
+SR-FR-QoS-40,Provide service health dashboards and metrics,F09,S,provisioned Grafana dashboard + /monitoring/summary (17)
+SR-FR-QoS-41,Provide real-time alerting for performance degradation,F09,S,"6 Prometheus alert rules; outage alert firing within ~60 s and resolved after restart, published to staff feed and archive (18 J)"
+SR-FR-IFL-42,Provide centralized data warehouse for logs/metrics/analytics,F11;F17,S,"logs, events, security alerts and per-service metric snapshots stored in one archive (18 K); Prometheus keeps raw series"
+SR-FR-IFL-43,Ensure data quality and consistency,F11,S,three integrity queries return 0 rows (07); deleting a challenge removes its solves and points (18 Q)
+SR-FR-IFL-44,Support data export and interoperability (CSV/JSON/XML),F12,S,"JSON, NDJSON, CSV and well-formed XML export (17; 18 L)"
+SR-FR-IFL-45,Provide unified data access layer,F12,S,filtered/full-text/time-bounded query + stats API (17)
+SR-FR-GL-46,Define and enforce system-wide policies and standards,F17,P,role checks in every service (13); no policy engine
+SR-FR-GL-47,Implement role-based access control (RBAC) policies,F02;F17,S,"486/486 role checks conform, through the edge and directly at each service (13)"
+SR-FR-GL-48,Support compliance monitoring (GDPR/NIS2/ISO 27001),F17,N,no compliance monitoring
+SR-FR-GL-49,Support risk assessment and management frameworks,F17,N,no risk-assessment support
+SEC-001,Containment (network/system containment and egress controls),F04,S,"egress guard: lab and challenge networks reach only themselves — no internet, no host services, no other networks, from 5 vantage points (14); drop counters as assurance evidence"
+SEC-002,TenantIsolation,F04,S,"14: no instance reaches another instance, another trainee's challenge or external systems; per-trainee object checks (13 C)"
+SEC-003,Encryption (mutually authenticated TLS everywhere),F13;F14,P,TLS at the edge (09); events encrypted end to end (18 H); service-to-service HTTP without mutual TLS
+SEC-004,Integrity (communications and platform-managed artefacts),F11,P,"edge TLS; events encrypted+signed (18 H); audit records hash-chained, edits detected (18 I); trainees cannot write the archive (18 L); internal HTTP and configuration files not cryptographically protected"
+SEC-005,Confidentiality (encryption at rest + role-restricted access),F11,P,"flags encrypted at rest (Fernet, 18 M); stores reachable only on the control-plane network/loopback via role-restricted APIs (13, 14); database and archive volumes not encrypted"
+SEC-006,Authentication (central IdP; MFA for privileged roles),F01,P,"every route rejects missing, forged and expired tokens (13); multi-factor authentication not provided"
+SEC-007,Authorization (RBAC + least privilege across services),F02,S,81 routes × 4 roles conform at the edge and at each service; object-level checks pass (13)
+SEC-008,LeastPrivilege (users and service identities),F02,S,"users: role checks on all 81 routes (13); services: RS256 private key only in IAM, own DB role (18 N) and broker account (18 S), Docker via filtering proxy (18 O)"
+SEC-009,IdentityFederation,F19,N,F19 not implemented
+SEC-010,NetworkSegmentation (management plane isolated from exercise planes),F04,S,management plane (service network; operator ports bound to loopback) unreachable from exercise networks and VPN (14)
+SEC-011,Monitoring (detect anomalous/policy-violating behaviour),F08,S,"rule-based detection of auth-failure bursts, forged bus messages, lockouts and outages, surfaced to staff and archived with attribution (13 G; 18 H, J)"
+SEC-012,Logging (tamper-evident/timestamped/attributable),F11,S,"archive hash chain over all records; direct edit in the store detected, documented deletions verifiable (18 I); server timestamps and verified signer per record; not immutable"
+SEC-013,Traceability (actions ↔ identities ↔ events),F17,S,"events carry verified signer, user id and correlation id; trainees cannot inject records; admin records attributed server-side (18 I, L)"
+SEC-014,Alerting,F09,S,security alerts for login lockouts (13 G) and forged bus messages (18 H) surfaced by the monitoring service and live feed
+SEC-015,BoundaryProtection (federation/external interfaces),F19,N,F19 not implemented
+SEC-016,PolicyEnforcement (all services + inter-range),F02;F17,P,role policy enforced in every service (13); no policy engine; no inter-range policy
+SEC-017,DataExportControl (restrict + audit + approval),F12,P,export admin-only (13); every export recorded in the tamper-evident archive (18 L); no separate approval step
+SEC-018,AdministrativeSecurity (privileged interfaces + non-repudiable audit),F01,P,"platform admin routes role-protected (13); operator UIs loopback-only (14); privileged actions attributed and recorded in the tamper-evident archive; no per-user signatures, not immutable"
+SEC-019,Compliance (legal/provider assurance evidence),F17,P,"containment enforced and evidenced (egress-guard counters, isolation probe reports, 14); no legal/compliance controls"
+SEC-020,ServiceIdentity (cryptographic per-service identity),F01,P,each service holds its own Ed25519 identity verified on every event it publishes (18 H); service-to-service HTTP calls not mutually authenticated (no mTLS)
+SEC-021,SecretManagement (dedicated service + rotation),F01,P,"keys and passwords generated and rotated by gen_secrets.sh, distributed per service as file secrets (17); no dedicated secrets-management service"
+SEC-022,SessionManagement (idle timeout + immediate revocation),F01,S,"8 h tokens; configurable idle timeout and immediate revocation (demotion, deletion, logout, admin revoke) enforced at the edge (13 D)"
+SEC-023,Patching (vulnerability scanning + patch lifecycle),F18,P,"all images digest-pinned; Trivy scans + pipeline gate; platform images free of fixable HIGH/CRITICAL, third-party images not yet patched"
+SEC-024,Fidelity with strict containment,F05,P,multi-container laboratory topologies over a per-instance VPN (05) with full containment (14); topologies limited to containers
+SEC-025,Usability (secure role-appropriate usability),F16,NV,needs usability testing with instructors/administrators
+SEC-026,RedTeamSafety (protect participants from collateral damage),F05,S,"exercise containers hardened, isolated and without egress (14, 17); residual risk: shared host kernel"
+SEC-027,ExerciseControl (least-privilege simulated users; no pivoting into range infrastructure),F05;F06,S,"White Team sets user, read-only root and allow-listed capabilities; privileged, host mounts/namespaces and other capabilities refused (18 P); no pivoting into range infrastructure (14)"

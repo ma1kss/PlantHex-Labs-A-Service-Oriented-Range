@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cyber_range_core"
+version = "0.1.0"
+description = "SOR cyber-range platform — shared core library (registry, auth, events, logging) plus the runtime deps every service needs"
+requires-python = ">=3.11"
+dependencies = [
+    # Core library deps (used by cyber_range_core itself)
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.30.0",
+    "pydantic>=2.7.0",
+    "pydantic-settings>=2.3.0",
+    "httpx>=0.27.0",                     # Consul HTTP API client
+    "aio-pika>=9.4.0",                   # Async RabbitMQ client
+    "python-jose[cryptography]>=3.3.0",  # JWT (RS256)
+    "structlog>=24.1.0",                 # Structured JSON logging
+    "python-dotenv>=1.0.0",
+    "prometheus-fastapi-instrumentator>=7.0.0",  # /metrics on every service
+    "websockets>=12.0",                          # Consumer & Portal WebSocket proxy (F14)
+    "opensearch-py>=2.4.0",                      # Data & Logging unified store (F11/F12)
+    "aiohttp>=3.9.0",                            # async transport for AsyncOpenSearch
+
+    # IAM service
+    "sqlalchemy[asyncio]>=2.0.30",
+    "asyncpg>=0.29.0",
+    "passlib[bcrypt]>=1.7.4",
+    "bcrypt<4",                          # passlib 1.7.4's wrap-bug self-check trips on bcrypt 4.x
+
+    # Scenario service (CTF challenges)
+    "python-multipart>=0.0.9",           # FastAPI multipart/form-data uploads
+    "aiofiles>=23.2.0",                  # async file streaming for downloads
+    "docker>=7.1.0",                     # Docker SDK — used by scenario_service for category=docker
+    "pyyaml>=6.0",                       # parse admin-uploaded compose files (lab challenges)
+    "cryptography>=42.0",                # X25519 WireGuard keypair generation (lab challenges)
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "pytest-asyncio>=0.23", "ruff>=0.6"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["cyber_range_core*"]

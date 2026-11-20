@@ -1,0 +1,15 @@
+=== API latency, 100 sequential requests per endpoint (2026-11-13T13:50:29+01:00) ===
+base=https://localhost:8000
+────────────────────────────────────────────────────────────────
+GET / (SPA index, TLS)             n=100  min=10.6ms  p50=12.2ms  p95=13.8ms  p99=15.0ms  max=15.1ms  mean=12.3ms
+GET /js/main.js (static)           n=100  min=10.0ms  p50=11.9ms  p95=13.8ms  p99=14.4ms  max=14.9ms  mean=12.0ms
+GET /health (edge)                 n=100  min=8.1ms  p50=9.1ms  p95=9.9ms  p99=11.7ms  max=13.2ms  mean=9.2ms
+GET /iam/health (proxied)          n=100  min=8.1ms  p50=9.2ms  p95=10.2ms  p99=10.5ms  max=11.0ms  mean=9.2ms
+GET /iam/auth/validate             n=100  min=16.9ms  p50=19.1ms  p95=21.9ms  p99=27.4ms  max=60.0ms  mean=19.8ms
+GET /iam/users                     n=100  min=21.9ms  p50=24.5ms  p95=28.4ms  p99=29.0ms  max=30.2ms  mean=24.8ms
+GET /scenario/challenges           n=100  min=28.3ms  p50=30.6ms  p95=32.8ms  p99=33.6ms  max=41.9ms  mean=30.8ms
+GET /learning/leaderboard          n=100  min=21.9ms  p50=24.4ms  p95=26.9ms  p99=27.8ms  max=31.2ms  mean=24.7ms
+GET /learning/leaderboard/teams    n=100  min=23.9ms  p50=27.4ms  p95=32.5ms  p99=33.9ms  max=41.6ms  mean=28.2ms
+GET /learning/teams                n=100  min=22.2ms  p50=25.5ms  p95=27.5ms  p99=30.3ms  max=30.4ms  mean=25.7ms
+GET /iam/profile                   n=100  min=21.1ms  p50=24.3ms  p95=28.1ms  p99=29.4ms  max=31.6ms  mean=24.7ms
+POST /iam/auth/login (bcrypt)      n=100  min=475.7ms  p50=484.4ms  p95=500.8ms  p99=508.4ms  max=514.1ms  mean=486.4ms

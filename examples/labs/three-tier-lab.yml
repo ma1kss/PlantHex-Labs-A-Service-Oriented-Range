@@ -1,0 +1,14 @@
+services:
+  web:
+    image: python:3.11-slim
+    expose: ["8080"]
+    command: sh -c "mkdir -p /s && echo 'web tier - flag FLAG{multi_endpoint_2026}' > /s/index.html && cd /s && python3 -m http.server 8080"
+  api:
+    image: python:3.11-slim
+    ports: ["5000:5000"]
+    command: sh -c "mkdir -p /s && echo 'api tier' > /s/index.html && cd /s && python3 -m http.server 5000"
+  db:
+    image: alpine:latest
+    expose: ["5432/tcp"]
+    command: sh -c "sleep infinity"
+

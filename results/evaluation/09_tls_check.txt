@@ -1,0 +1,21 @@
+=== TLS / edge security (2026-11-13T13:57:27+01:00) ===
+── certificate ──
+subject=CN = localhost
+issuer=CN = localhost
+notBefore=Jul  9 06:26:48 2026 GMT
+notAfter=Oct 11 06:26:48 2028 GMT
+sha256 Fingerprint=B3:AD:C6:1C:C9:0C:95:6F:86:1C:D6:AB:BB:75:5F:5D:B0:2A:3C:3C:F9:40:D3:C4:13:43:E3:6D:12:1E:45:9A
+
+── negotiated protocol/cipher ──
+
+── handshake overhead (10 samples) ──
+n=10  min=5.9ms  p50=6.1ms  p95=6.7ms  p99=6.7ms  max=6.7ms  mean=6.2ms
+
+── edge auth enforcement (expect 401s) ──
+  /iam/users                   no-token → HTTP 401
+  /learning/participants       no-token → HTTP 401
+  /scenario/sessions           no-token → HTTP 401
+  /events/announcements        no-token → HTTP 401
+
+── plaintext HTTP on the TLS port is rejected (expect failure) ──
+  ok — plaintext refused

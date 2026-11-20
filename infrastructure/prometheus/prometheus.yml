@@ -1,0 +1,48 @@
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+  external_labels:
+    monitor: sor-cyber-range
+
+# Alerting rules (performance + security); surfaced by the monitoring service.
+rule_files:
+  - /etc/prometheus/alerts.yml
+
+scrape_configs:
+
+  # SOR services, via Consul service discovery
+  - job_name: sor-services
+    metrics_path: /metrics
+    consul_sd_configs:
+      - server: sor_consul:8500
+    # The TLS edge (consumer-portal) serves /metrics over HTTPS with a
+    # self-signed cert; scheme is per-target via relabeling below.
+    tls_config:
+      insecure_skip_verify: true
+    relabel_configs:
+      # Services register meta.scheme = http|https; scrape accordingly.
+      - source_labels: [__meta_consul_service_metadata_scheme]
+        regex: https
+        target_label: __scheme__
+        replacement: https
+      # Keep only services tagged "cyber-range" (the tag every SOR service
+      # registers with). This filters out Consul's own self-registration.
+      - source_labels: [__meta_consul_tags]
+        regex: .*,cyber-range,.*
+        action: keep
+      # Add a `service` label = the Consul service name so every metric is
+      # attributable, e.g. up{service="iam-service"}. We deliberately leave
+      # `job` as the scrape-job name ("sor-services") so up{job="sor-services"}
+      # selects the whole fleet.
+      - source_labels: [__meta_consul_service]
+        target_label: service
+      # Surface the Consul node + service id for debugging.
+      - source_labels: [__meta_consul_node]
+        target_label: consul_node
+      - source_labels: [__meta_consul_service_id]
+        target_label: consul_service_id
+
+  # Prometheus self-monitoring
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]

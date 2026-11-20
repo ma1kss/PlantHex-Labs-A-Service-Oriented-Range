@@ -1,0 +1,633 @@
+ Image sor/learning-service Building 
+ Image sor/events-service Building 
+ Image sor/data-logging-service Building 
+ Image sor/iam-service Building 
+ Image sor/scenario-service Building 
+ Image sor/consumer-portal-service Building 
+ Image sor/orchestration-service Building 
+ Image sor/egress-guard Building 
+ Image sor/monitoring-service Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 4.50kB done
+#1 DONE 0.0s
+
+#2 [monitoring internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.07kB done
+#2 DONE 0.0s
+
+#3 [egress-guard internal] load build definition from Dockerfile
+#3 transferring dockerfile: 501B done
+#3 DONE 0.0s
+
+#4 [data internal] load build definition from Dockerfile
+#4 transferring dockerfile: 1.09kB done
+#4 DONE 0.0s
+
+#5 [egress-guard internal] load metadata for docker.io/library/alpine:3.19@sha256:6baf43584bcb78f2e5847d1de515f23499913ac9f12bdf834811a3145eb11ca1
+#5 DONE 0.0s
+
+#6 [iam internal] load build definition from Dockerfile
+#6 transferring dockerfile: 1.03kB done
+#6 DONE 0.1s
+
+#7 [events internal] load build definition from Dockerfile
+#7 transferring dockerfile: 1.12kB done
+#7 DONE 0.1s
+
+#8 [iam internal] load .dockerignore
+#8 transferring context: 2B done
+#8 transferring context: 2B done
+#8 DONE 0.1s
+
+#9 [egress-guard internal] load .dockerignore
+#9 transferring context: 2B done
+#9 DONE 0.0s
+
+#10 [orchestration internal] load build definition from Dockerfile
+#10 transferring dockerfile: 1.08kB done
+#10 DONE 0.1s
+
+#11 [egress-guard 1/4] FROM docker.io/library/alpine:3.19@sha256:6baf43584bcb78f2e5847d1de515f23499913ac9f12bdf834811a3145eb11ca1
+#11 DONE 0.0s
+
+#12 [portal internal] load build definition from Dockerfile
+#12 transferring dockerfile: 1.29kB done
+#12 DONE 0.1s
+
+#13 [learning 1/8] FROM docker.io/library/python:3.11-slim
+#13 DONE 0.0s
+
+#14 [scenario internal] load build definition from Dockerfile
+#14 transferring dockerfile: 1.05kB done
+#14 DONE 0.2s
+
+#15 [learning internal] load build definition from Dockerfile
+#15 transferring dockerfile: 1.07kB done
+#15 DONE 0.2s
+
+#16 [egress-guard internal] load build context
+#16 transferring context: 30B done
+#16 DONE 0.0s
+
+#17 [learning internal] load metadata for docker.io/library/python:3.11-slim
+#17 DONE 0.0s
+
+#18 [egress-guard 2/4] RUN apk add --no-cache iptables
+#18 CACHED
+
+#19 [egress-guard 3/4] COPY guard.sh /guard.sh
+#19 CACHED
+
+#20 [egress-guard 4/4] RUN chmod +x /guard.sh
+#20 CACHED
+
+#21 [scenario internal] load build context
+#21 transferring context: 405.52kB 0.0s done
+#21 DONE 0.1s
+
+#22 [egress-guard] exporting to image
+#22 exporting layers done
+#22 writing image sha256:8f33a6cd7aeef2d4c40b392709154dbe5c12b2e2b2a5de23fbafb12857b204e1 done
+#22 naming to docker.io/sor/egress-guard done
+#22 DONE 0.0s
+
+#23 [monitoring internal] load build context
+#23 transferring context: 143.42kB 0.0s done
+#23 DONE 0.1s
+
+#24 [data internal] load build context
+#24 transferring context: 173.38kB 0.0s done
+#24 DONE 0.1s
+
+#25 [iam internal] load build context
+#25 transferring context: 196.30kB 0.0s done
+#25 DONE 0.1s
+
+#26 [events internal] load build context
+#26 transferring context: 134.40kB 0.0s done
+#26 DONE 0.1s
+
+#27 [orchestration internal] load build context
+#27 transferring context: 136.43kB 0.0s done
+#27 DONE 0.1s
+
+#28 [learning internal] load build context
+#28 transferring context: 208.19kB 0.0s done
+#28 DONE 0.1s
+
+#29 [portal internal] load build context
+#29 transferring context: 820.78kB 0.0s done
+#29 DONE 0.1s
+
+#30 [scenario 3/8] RUN apt-get update     && apt-get upgrade -y     && apt-get install -y --no-install-recommends curl     && rm -rf /var/lib/apt/lists/*
+#30 CACHED
+
+#31 [scenario 2/8] WORKDIR /app
+#31 CACHED
+
+#32 [scenario 4/8] COPY pyproject.toml ./
+#32 CACHED
+
+#33 [egress-guard] resolving provenance for metadata file
+#33 DONE 0.0s
+
+#34 [events 5/8] COPY cyber_range_core ./cyber_range_core
+#34 DONE 0.1s
+
+#35 [scenario 6/8] RUN pip install --no-cache-dir --upgrade "wheel>=0.46.2" setuptools     && pip install --no-cache-dir -e .
+#35 2.660 Requirement already satisfied: wheel>=0.46.2 in /usr/local/lib/python3.11/site-packages (0.46.3)
+#35 2.836 Collecting wheel>=0.46.2
+#35 2.967   Downloading wheel-0.48.0-py3-none-any.whl.metadata (2.3 kB)
+#35 2.974 Requirement already satisfied: setuptools in /usr/local/lib/python3.11/site-packages (79.0.1)
+#35 3.264 Collecting setuptools
+#35 3.293   Downloading setuptools-84.2.1-py3-none-any.whl.metadata (6.6 kB)
+#35 3.301 Requirement already satisfied: packaging>=24.0 in /usr/local/lib/python3.11/site-packages (from wheel>=0.46.2) (26.2)
+#35 3.380 Downloading wheel-0.48.0-py3-none-any.whl (33 kB)
+#35 3.417 Downloading setuptools-84.2.1-py3-none-any.whl (876 kB)
+#35 3.507    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 876.3/876.3 kB 10.3 MB/s eta 0:00:00
+#35 3.656 Installing collected packages: wheel, setuptools
+#35 3.656   Attempting uninstall: wheel
+#35 3.661     Found existing installation: wheel 0.46.3
+#35 3.667     Uninstalling wheel-0.46.3:
+#35 3.705       Successfully uninstalled wheel-0.46.3
+#35 3.760   Attempting uninstall: setuptools
+#35 3.766     Found existing installation: setuptools 79.0.1
+#35 3.820     Uninstalling setuptools-79.0.1:
+#35 4.242       Successfully uninstalled setuptools-79.0.1
+#35 5.130 Successfully installed setuptools-84.2.1 wheel-0.48.0
+#35 5.131 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+#35 5.368 
+#35 5.368 [notice] A new release of pip is available: 24.0 -> 26.3
+#35 5.368 [notice] To update, run: pip install --upgrade pip
+#35 7.573 Obtaining file:///app
+#35 7.582   Installing build dependencies: started
+#35 12.36   Installing build dependencies: finished with status 'done'
+#35 12.36   Checking if build backend supports build_editable: started
+#35 13.19   Checking if build backend supports build_editable: finished with status 'done'
+#35 13.20   Getting requirements to build editable: started
+#35 14.14   Getting requirements to build editable: finished with status 'done'
+#35 14.14   Preparing editable metadata (pyproject.toml): started
+#35 15.07   Preparing editable metadata (pyproject.toml): finished with status 'done'
+#35 15.41 Collecting fastapi>=0.115.0 (from cyber_range_core==0.1.0)
+#35 15.54   Downloading fastapi-0.162.5-py3-none-any.whl.metadata (27 kB)
+#35 15.63 Collecting uvicorn>=0.30.0 (from uvicorn[standard]>=0.30.0->cyber_range_core==0.1.0)
+#35 15.66   Downloading uvicorn-0.54.0-py3-none-any.whl.metadata (6.6 kB)
+#35 15.94 Collecting pydantic>=2.7.0 (from cyber_range_core==0.1.0)
+#35 15.97   Downloading pydantic-2.14.3-py3-none-any.whl.metadata (141 kB)
+#35 16.00      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 141.5/141.5 kB 4.5 MB/s eta 0:00:00
+#35 16.06 Collecting pydantic-settings>=2.3.0 (from cyber_range_core==0.1.0)
+#35 16.09   Downloading pydantic_settings-2.16.3-py3-none-any.whl.metadata (4.0 kB)
+#35 16.15 Collecting httpx>=0.27.0 (from cyber_range_core==0.1.0)
+#35 16.18   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#35 16.29 Collecting aio-pika>=9.4.0 (from cyber_range_core==0.1.0)
+#35 16.32   Downloading aio_pika-10.2.3-py3-none-any.whl.metadata (16 kB)
+#35 16.37 Collecting python-jose>=3.3.0 (from python-jose[cryptography]>=3.3.0->cyber_range_core==0.1.0)
+#35 16.40   Downloading python_jose-3.5.0-py2.py3-none-any.whl.metadata (5.5 kB)
+#35 16.45 Collecting structlog>=24.1.0 (from cyber_range_core==0.1.0)
+#35 16.48   Downloading structlog-26.1.0-py3-none-any.whl.metadata (9.7 kB)
+#35 16.54 Collecting python-dotenv>=1.0.0 (from cyber_range_core==0.1.0)
+#35 16.56   Downloading python_dotenv-1.2.4-py3-none-any.whl.metadata (29 kB)
+#35 16.62 Collecting prometheus-fastapi-instrumentator>=7.0.0 (from cyber_range_core==0.1.0)
+#35 16.65   Downloading prometheus_fastapi_instrumentator-8.1.0-py3-none-any.whl.metadata (13 kB)
+#35 16.94 Collecting websockets>=12.0 (from cyber_range_core==0.1.0)
+#35 16.97   Downloading websockets-17.4-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (6.3 kB)
+#35 17.03 Collecting opensearch-py>=2.4.0 (from cyber_range_core==0.1.0)
+#35 17.06   Downloading opensearch_py-3.2.0-py3-none-any.whl.metadata (7.2 kB)
+#35 18.02 Collecting aiohttp>=3.9.0 (from cyber_range_core==0.1.0)
+#35 18.04   Downloading aiohttp-3.14.5-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (8.3 kB)
+#35 18.73 Collecting sqlalchemy>=2.0.30 (from sqlalchemy[asyncio]>=2.0.30->cyber_range_core==0.1.0)
+#35 18.76   Downloading sqlalchemy-2.1.8-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (9.7 kB)
+#35 18.86 Collecting asyncpg>=0.29.0 (from cyber_range_core==0.1.0)
+#35 18.89   Downloading asyncpg-0.32.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (4.4 kB)
+#35 18.94 Collecting passlib>=1.7.4 (from passlib[bcrypt]>=1.7.4->cyber_range_core==0.1.0)
+#35 18.97   Downloading passlib-1.7.4-py2.py3-none-any.whl.metadata (1.7 kB)
+#35 19.06 Collecting bcrypt<4 (from cyber_range_core==0.1.0)
+#35 19.09   Downloading bcrypt-3.2.2-cp36-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl.metadata (8.3 kB)
+#35 19.14 Collecting python-multipart>=0.0.9 (from cyber_range_core==0.1.0)
+#35 19.17   Downloading python_multipart-0.0.33-py3-none-any.whl.metadata (6.3 kB)
+#35 19.21 Collecting aiofiles>=23.2.0 (from cyber_range_core==0.1.0)
+#35 19.24   Downloading aiofiles-25.1.0-py3-none-any.whl.metadata (6.3 kB)
+#35 19.31 Collecting docker>=7.1.0 (from cyber_range_core==0.1.0)
+#35 19.33   Downloading docker-7.2.0-py3-none-any.whl.metadata (3.8 kB)
+#35 19.42 Collecting pyyaml>=6.0 (from cyber_range_core==0.1.0)
+#35 19.45   Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+#35 19.94 Collecting cryptography>=42.0 (from cyber_range_core==0.1.0)
+#35 19.97   Downloading cryptography-50.0.2-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (4.4 kB)
+#35 20.05 Collecting aiormq<8,>=7.2.4 (from aio-pika>=9.4.0->cyber_range_core==0.1.0)
+#35 20.08   Downloading aiormq-7.2.5-py3-none-any.whl.metadata (27 kB)
+#35 20.57 Collecting yarl (from aio-pika>=9.4.0->cyber_range_core==0.1.0)
+#35 20.59   Downloading yarl-1.25.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (111 kB)
+#35 20.60      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 111.6/111.6 kB 51.5 MB/s eta 0:00:00
+#35 20.80 Collecting aiohappyeyeballs>=2.5.0 (from aiohttp>=3.9.0->cyber_range_core==0.1.0)
+#35 20.83   Downloading aiohappyeyeballs-2.7.1-py3-none-any.whl.metadata (5.9 kB)
+#35 20.87 Collecting aiosignal>=1.4.0 (from aiohttp>=3.9.0->cyber_range_core==0.1.0)
+#35 20.90   Downloading aiosignal-1.4.0-py3-none-any.whl.metadata (3.7 kB)
+#35 20.95 Collecting attrs>=17.3.0 (from aiohttp>=3.9.0->cyber_range_core==0.1.0)
+#35 20.98   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+#35 21.12 Collecting frozenlist>=1.1.1 (from aiohttp>=3.9.0->cyber_range_core==0.1.0)
+#35 21.15   Downloading frozenlist-1.8.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (20 kB)
+#35 21.72 Collecting multidict<8.0,>=4.5 (from aiohttp>=3.9.0->cyber_range_core==0.1.0)
+#35 21.75   Downloading multidict-7.2.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (6.1 kB)
+#35 21.92 Collecting propcache>=0.2.0 (from aiohttp>=3.9.0->cyber_range_core==0.1.0)
+#35 21.95   Downloading propcache-0.5.4-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (25 kB)
+#35 22.01 Collecting typing_extensions>=4.4 (from aiohttp>=3.9.0->cyber_range_core==0.1.0)
+#35 22.04   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+#35 22.32 Collecting cffi>=1.1 (from bcrypt<4->cyber_range_core==0.1.0)
+#35 22.35   Downloading cffi-2.1.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.5 kB)
+#35 22.60 Collecting requests>=2.26.0 (from docker>=7.1.0->cyber_range_core==0.1.0)
+#35 22.63   Downloading requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+#35 22.71 Collecting urllib3>=1.26.0 (from docker>=7.1.0->cyber_range_core==0.1.0)
+#35 22.74   Downloading urllib3-2.8.0-py3-none-any.whl.metadata (7.4 kB)
+#35 22.87 Collecting starlette>=0.46.0 (from fastapi>=0.115.0->cyber_range_core==0.1.0)
+#35 22.90   Downloading starlette-1.10.0-py3-none-any.whl.metadata (6.6 kB)
+#35 22.96 Collecting anyio>=4.1.0 (from fastapi>=0.115.0->cyber_range_core==0.1.0)
+#35 22.99   Downloading anyio-4.16.0-py3-none-any.whl.metadata (4.7 kB)
+#35 23.06 Collecting typing-inspection>=0.4.2 (from fastapi>=0.115.0->cyber_range_core==0.1.0)
+#35 23.09   Downloading typing_inspection-0.4.5-py3-none-any.whl.metadata (2.6 kB)
+#35 23.13 Collecting annotated-doc>=0.0.2 (from fastapi>=0.115.0->cyber_range_core==0.1.0)
+#35 23.16   Downloading annotated_doc-0.0.6-py3-none-any.whl.metadata (6.5 kB)
+#35 23.23 Collecting opentelemetry-api>=1.44.0 (from fastapi>=0.115.0->cyber_range_core==0.1.0)
+#35 23.25   Downloading opentelemetry_api-1.45.2-py3-none-any.whl.metadata (1.4 kB)
+#35 23.33 Collecting certifi (from httpx>=0.27.0->cyber_range_core==0.1.0)
+#35 23.36   Downloading certifi-2026.10.23-py3-none-any.whl.metadata (2.5 kB)
+#35 23.42 Collecting httpcore==1.* (from httpx>=0.27.0->cyber_range_core==0.1.0)
+#35 23.45   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#35 23.50 Collecting idna (from httpx>=0.27.0->cyber_range_core==0.1.0)
+#35 23.53   Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+#35 23.58 Collecting h11>=0.16 (from httpcore==1.*->httpx>=0.27.0->cyber_range_core==0.1.0)
+#35 23.61   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#35 23.70 Collecting python-dateutil (from opensearch-py>=2.4.0->cyber_range_core==0.1.0)
+#35 23.73   Downloading python_dateutil-4.0.0-py3-none-any.whl.metadata (7.3 kB)
+#35 23.78 Collecting Events (from opensearch-py>=2.4.0->cyber_range_core==0.1.0)
+#35 23.81   Downloading Events-0.5-py3-none-any.whl.metadata (3.9 kB)
+#35 23.85 Collecting opensearch-protobufs==1.2.0 (from opensearch-py>=2.4.0->cyber_range_core==0.1.0)
+#35 23.89   Downloading opensearch_protobufs-1.2.0-py3-none-any.whl.metadata (677 bytes)
+#35 24.19 Collecting protobuf>=3.25.8 (from opensearch-protobufs==1.2.0->opensearch-py>=2.4.0->cyber_range_core==0.1.0)
+#35 24.22   Downloading protobuf-7.36.2-cp310-abi3-manylinux2014_x86_64.whl.metadata (595 bytes)
+#35 25.36 Collecting grpcio>=1.70.0 (from opensearch-protobufs==1.2.0->opensearch-py>=2.4.0->cyber_range_core==0.1.0)
+#35 25.38   Downloading grpcio-1.85.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (3.8 kB)
+#35 25.46 Collecting prometheus-client<1.0.0,>=0.8.0 (from prometheus-fastapi-instrumentator>=7.0.0->cyber_range_core==0.1.0)
+#35 25.49   Downloading prometheus_client-0.26.0-py3-none-any.whl.metadata (2.1 kB)
+#35 25.58 Collecting annotated-types>=0.6.0 (from pydantic>=2.7.0->cyber_range_core==0.1.0)
+#35 25.61   Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+#35 27.13 Collecting pydantic-core==2.50.4 (from pydantic>=2.7.0->cyber_range_core==0.1.0)
+#35 27.16   Downloading pydantic_core-2.50.4-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (6.6 kB)
+#35 27.27 Collecting ecdsa!=0.15 (from python-jose>=3.3.0->python-jose[cryptography]>=3.3.0->cyber_range_core==0.1.0)
+#35 27.30   Downloading ecdsa-0.19.2-py2.py3-none-any.whl.metadata (29 kB)
+#35 27.36 Collecting rsa!=4.1.1,!=4.4,<5.0,>=4.0 (from python-jose>=3.3.0->python-jose[cryptography]>=3.3.0->cyber_range_core==0.1.0)
+#35 27.39   Downloading rsa-4.9.1-py3-none-any.whl.metadata (5.6 kB)
+#35 27.45 Collecting pyasn1>=0.5.0 (from python-jose>=3.3.0->python-jose[cryptography]>=3.3.0->cyber_range_core==0.1.0)
+#35 27.48   Downloading pyasn1-0.6.5-py3-none-any.whl.metadata (8.4 kB)
+#35 27.94 Collecting greenlet>=1 (from sqlalchemy[asyncio]>=2.0.30->cyber_range_core==0.1.0)
+#35 27.97   Downloading greenlet-3.5.6-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (3.8 kB)
+#35 28.06 Collecting click>=7.0 (from uvicorn>=0.30.0->uvicorn[standard]>=0.30.0->cyber_range_core==0.1.0)
+#35 28.09   Downloading click-8.5.1-py3-none-any.whl.metadata (2.6 kB)
+#35 28.20 Collecting httptools>=0.8.0 (from uvicorn[standard]>=0.30.0->cyber_range_core==0.1.0)
+#35 28.23   Downloading httptools-0.9.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (3.5 kB)
+#35 28.35 Collecting uvloop>=0.15.1 (from uvicorn[standard]>=0.30.0->cyber_range_core==0.1.0)
+#35 28.38   Downloading uvloop-0.23.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (5.1 kB)
+#35 28.55 Collecting watchfiles>=0.20 (from uvicorn[standard]>=0.30.0->cyber_range_core==0.1.0)
+#35 28.58   Downloading watchfiles-1.3.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.9 kB)
+#35 28.65 Collecting pamqp<6,>=5 (from aiormq<8,>=7.2.4->aio-pika>=9.4.0->cyber_range_core==0.1.0)
+#35 28.68   Downloading pamqp-5.0.0-py3-none-any.whl.metadata (3.0 kB)
+#35 28.80 Collecting pycparser (from cffi>=1.1->bcrypt<4->cyber_range_core==0.1.0)
+#35 28.83   Downloading pycparser-3.12-py3-none-any.whl.metadata (9.7 kB)
+#35 28.89 Collecting six>=1.9.0 (from ecdsa!=0.15->python-jose>=3.3.0->python-jose[cryptography]>=3.3.0->cyber_range_core==0.1.0)
+#35 28.92   Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+#35 29.33 Collecting charset_normalizer<4,>=2 (from requests>=2.26.0->docker>=7.1.0->cyber_range_core==0.1.0)
+#35 29.36   Downloading charset_normalizer-3.5.2-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (46 kB)
+#35 29.36      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 46.4/46.4 kB 77.7 MB/s eta 0:00:00
+#35 29.66 Collecting tzdata (from python-dateutil->opensearch-py>=2.4.0->cyber_range_core==0.1.0)
+#35 29.69   Downloading tzdata-2026.6-py2.py3-none-any.whl.metadata (1.4 kB)
+#35 29.83 Downloading aio_pika-10.2.3-py3-none-any.whl (61 kB)
+#35 29.83    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 61.7/61.7 kB 89.9 MB/s eta 0:00:00
+#35 29.86 Downloading aiofiles-25.1.0-py3-none-any.whl (14 kB)
+#35 29.89 Downloading aiohttp-3.14.5-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (1.9 MB)
+#35 29.96    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.9/1.9 MB 28.6 MB/s eta 0:00:00
+#35 29.99 Downloading asyncpg-0.32.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (3.3 MB)
+#35 30.03    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.3/3.3 MB 118.2 MB/s eta 0:00:00
+#35 30.05 Downloading bcrypt-3.2.2-cp36-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl (62 kB)
+#35 30.06    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 62.3/62.3 kB 55.0 MB/s eta 0:00:00
+#35 30.09 Downloading cryptography-50.0.2-cp311-abi3-manylinux_2_34_x86_64.whl (4.8 MB)
+#35 30.15    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.8/4.8 MB 75.7 MB/s eta 0:00:00
+#35 30.18 Downloading docker-7.2.0-py3-none-any.whl (148 kB)
+#35 30.19    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 148.8/148.8 kB 130.2 MB/s eta 0:00:00
+#35 30.21 Downloading fastapi-0.162.5-py3-none-any.whl (151 kB)
+#35 30.22    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 151.8/151.8 kB 211.3 MB/s eta 0:00:00
+#35 30.25 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#35 30.25    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.5/73.5 kB 177.3 MB/s eta 0:00:00
+#35 30.28 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#35 30.28    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.8/78.8 kB 96.7 MB/s eta 0:00:00
+#35 30.31 Downloading opensearch_py-3.2.0-py3-none-any.whl (387 kB)
+#35 30.32    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 387.3/387.3 kB 125.9 MB/s eta 0:00:00
+#35 30.35 Downloading opensearch_protobufs-1.2.0-py3-none-any.whl (54 kB)
+#35 30.36    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 54.8/54.8 kB 157.7 MB/s eta 0:00:00
+#35 30.39 Downloading passlib-1.7.4-py2.py3-none-any.whl (525 kB)
+#35 30.40    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 525.6/525.6 kB 132.1 MB/s eta 0:00:00
+#35 30.43 Downloading prometheus_fastapi_instrumentator-8.1.0-py3-none-any.whl (19 kB)
+#35 30.45 Downloading pydantic-2.14.3-py3-none-any.whl (494 kB)
+#35 30.46    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 494.1/494.1 kB 195.6 MB/s eta 0:00:00
+#35 30.49 Downloading pydantic_core-2.50.4-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (2.3 MB)
+#35 30.72    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.3/2.3 MB 9.9 MB/s eta 0:00:00
+#35 30.75 Downloading pydantic_settings-2.16.3-py3-none-any.whl (82 kB)
+#35 30.75    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 82.7/82.7 kB 77.4 MB/s eta 0:00:00
+#35 30.78 Downloading python_dotenv-1.2.4-py3-none-any.whl (23 kB)
+#35 30.81 Downloading python_jose-3.5.0-py2.py3-none-any.whl (34 kB)
+#35 30.83 Downloading python_multipart-0.0.33-py3-none-any.whl (32 kB)
+#35 30.86 Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (806 kB)
+#35 30.87    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 806.6/806.6 kB 171.0 MB/s eta 0:00:00
+#35 30.90 Downloading sqlalchemy-2.1.8-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (4.7 MB)
+#35 31.13    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.7/4.7 MB 20.5 MB/s eta 0:00:00
+#35 31.16 Downloading structlog-26.1.0-py3-none-any.whl (73 kB)
+#35 31.16    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.8/73.8 kB 120.9 MB/s eta 0:00:00
+#35 31.19 Downloading uvicorn-0.54.0-py3-none-any.whl (87 kB)
+#35 31.20    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 87.4/87.4 kB 66.1 MB/s eta 0:00:00
+#35 31.22 Downloading websockets-17.4-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (226 kB)
+#35 31.23    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 226.0/226.0 kB 115.8 MB/s eta 0:00:00
+#35 31.26 Downloading aiohappyeyeballs-2.7.1-py3-none-any.whl (15 kB)
+#35 31.29 Downloading aiormq-7.2.5-py3-none-any.whl (40 kB)
+#35 31.29    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 40.7/40.7 kB 67.2 MB/s eta 0:00:00
+#35 31.32 Downloading aiosignal-1.4.0-py3-none-any.whl (7.5 kB)
+#35 31.34 Downloading annotated_doc-0.0.6-py3-none-any.whl (5.3 kB)
+#35 31.37 Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+#35 31.40 Downloading anyio-4.16.0-py3-none-any.whl (134 kB)
+#35 31.41    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 134.5/134.5 kB 94.9 MB/s eta 0:00:00
+#35 31.43 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+#35 31.44    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 67.5/67.5 kB 67.3 MB/s eta 0:00:00
+#35 31.47 Downloading certifi-2026.10.23-py3-none-any.whl (135 kB)
+#35 31.47    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 135.1/135.1 kB 181.3 MB/s eta 0:00:00
+#35 31.50 Downloading cffi-2.1.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (217 kB)
+#35 31.50    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 217.8/217.8 kB 146.4 MB/s eta 0:00:00
+#35 31.53 Downloading click-8.5.1-py3-none-any.whl (126 kB)
+#35 31.54    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 126.2/126.2 kB 130.3 MB/s eta 0:00:00
+#35 31.57 Downloading ecdsa-0.19.2-py2.py3-none-any.whl (150 kB)
+#35 31.57    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 150.8/150.8 kB 126.8 MB/s eta 0:00:00
+#35 31.60 Downloading frozenlist-1.8.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (231 kB)
+#35 31.61    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 231.1/231.1 kB 147.2 MB/s eta 0:00:00
+#35 31.64 Downloading greenlet-3.5.6-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (624 kB)
+#35 31.65    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 624.4/624.4 kB 161.2 MB/s eta 0:00:00
+#35 31.68 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#35 31.71 Downloading httptools-0.9.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (499 kB)
+#35 31.72    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 499.1/499.1 kB 142.7 MB/s eta 0:00:00
+#35 31.74 Downloading idna-3.20-py3-none-any.whl (69 kB)
+#35 31.75    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 69.6/69.6 kB 79.3 MB/s eta 0:00:00
+#35 31.78 Downloading multidict-7.2.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (510 kB)
+#35 31.78    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 510.1/510.1 kB 149.1 MB/s eta 0:00:00
+#35 31.81 Downloading opentelemetry_api-1.45.2-py3-none-any.whl (60 kB)
+#35 31.82    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 60.3/60.3 kB 181.6 MB/s eta 0:00:00
+#35 31.84 Downloading prometheus_client-0.26.0-py3-none-any.whl (64 kB)
+#35 31.85    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 64.5/64.5 kB 111.0 MB/s eta 0:00:00
+#35 31.88 Downloading propcache-0.5.4-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (235 kB)
+#35 31.88    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 235.4/235.4 kB 212.9 MB/s eta 0:00:00
+#35 31.91 Downloading pyasn1-0.6.5-py3-none-any.whl (84 kB)
+#35 31.91    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 84.8/84.8 kB 148.1 MB/s eta 0:00:00
+#35 31.94 Downloading requests-2.34.2-py3-none-any.whl (73 kB)
+#35 31.94    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.1/73.1 kB 115.8 MB/s eta 0:00:00
+#35 31.97 Downloading rsa-4.9.1-py3-none-any.whl (34 kB)
+#35 32.00 Downloading starlette-1.10.0-py3-none-any.whl (80 kB)
+#35 32.00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 80.6/80.6 kB 132.1 MB/s eta 0:00:00
+#35 32.03 Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+#35 32.03    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 45.6/45.6 kB 63.1 MB/s eta 0:00:00
+#35 32.06 Downloading typing_inspection-0.4.5-py3-none-any.whl (14 kB)
+#35 32.09 Downloading urllib3-2.8.0-py3-none-any.whl (135 kB)
+#35 32.09    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 135.7/135.7 kB 186.3 MB/s eta 0:00:00
+#35 32.13 Downloading uvloop-0.23.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (4.0 MB)
+#35 32.16    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.0/4.0 MB 128.8 MB/s eta 0:00:00
+#35 32.19 Downloading watchfiles-1.3.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (458 kB)
+#35 32.20    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 458.4/458.4 kB 141.8 MB/s eta 0:00:00
+#35 32.23 Downloading yarl-1.25.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (117 kB)
+#35 32.24    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 117.7/117.7 kB 159.0 MB/s eta 0:00:00
+#35 32.26 Downloading Events-0.5-py3-none-any.whl (6.8 kB)
+#35 32.29 Downloading python_dateutil-4.0.0-py3-none-any.whl (92 kB)
+#35 32.29    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 92.9/92.9 kB 111.5 MB/s eta 0:00:00
+#35 32.32 Downloading charset_normalizer-3.5.2-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (269 kB)
+#35 32.33    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 270.0/270.0 kB 181.4 MB/s eta 0:00:00
+#35 32.36 Downloading grpcio-1.85.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (7.4 MB)
+#35 32.52    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 7.4/7.4 MB 48.5 MB/s eta 0:00:00
+#35 32.55 Downloading pamqp-5.0.0-py3-none-any.whl (32 kB)
+#35 32.57 Downloading protobuf-7.36.2-cp310-abi3-manylinux2014_x86_64.whl (343 kB)
+#35 32.58    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 343.2/343.2 kB 104.3 MB/s eta 0:00:00
+#35 32.61 Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+#35 32.64 Downloading pycparser-3.12-py3-none-any.whl (62 kB)
+#35 32.64    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 62.6/62.6 kB 69.5 MB/s eta 0:00:00
+#35 32.67 Downloading tzdata-2026.6-py2.py3-none-any.whl (348 kB)
+#35 32.68    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 348.2/348.2 kB 135.8 MB/s eta 0:00:00
+#35 32.88 Building wheels for collected packages: cyber_range_core
+#35 32.89   Building editable for cyber_range_core (pyproject.toml): started
+#35 34.06   Building editable for cyber_range_core (pyproject.toml): finished with status 'done'
+#35 34.06   Created wheel for cyber_range_core: filename=cyber_range_core-0.1.0-0.editable-py3-none-any.whl size=3192 sha256=e1761ddafada696ed7d17e2ac1e1c065a9a78f2d4ff837a882062eab76652d3b
+#35 34.06   Stored in directory: /tmp/pip-ephem-wheel-cache-q57grfpg/wheels/57/0f/98/bb57b2b57b95807699b822a35c022f139d38a02c27922f27ce
+#35 34.06 Successfully built cyber_range_core
+#35 34.54 Installing collected packages: passlib, Events, websockets, uvloop, urllib3, tzdata, typing_extensions, structlog, six, pyyaml, python-multipart, python-dotenv, pycparser, pyasn1, protobuf, propcache, prometheus-client, pamqp, multidict, idna, httptools, h11, greenlet, frozenlist, click, charset_normalizer, certifi, attrs, asyncpg, annotated-types, annotated-doc, aiohappyeyeballs, aiofiles, yarl, uvicorn, typing-inspection, sqlalchemy, rsa, requests, python-dateutil, pydantic-core, opentelemetry-api, httpcore, grpcio, ecdsa, cffi, anyio, aiosignal, watchfiles, starlette, python-jose, pydantic, opensearch-protobufs, httpx, docker, cryptography, bcrypt, aiormq, aiohttp, pydantic-settings, prometheus-fastapi-instrumentator, opensearch-py, fastapi, aio-pika, cyber_range_core
+#35 45.37 Successfully installed Events-0.5 aio-pika-10.2.3 aiofiles-25.1.0 aiohappyeyeballs-2.7.1 aiohttp-3.14.5 aiormq-7.2.5 aiosignal-1.4.0 annotated-doc-0.0.6 annotated-types-0.8.0 anyio-4.16.0 asyncpg-0.32.0 attrs-26.1.0 bcrypt-3.2.2 certifi-2026.10.23 cffi-2.1.1 charset_normalizer-3.5.2 click-8.5.1 cryptography-50.0.2 cyber_range_core-0.1.0 docker-7.2.0 ecdsa-0.19.2 fastapi-0.162.5 frozenlist-1.8.0 greenlet-3.5.6 grpcio-1.85.1 h11-0.16.0 httpcore-1.0.9 httptools-0.9.0 httpx-0.28.1 idna-3.20 multidict-7.2.1 opensearch-protobufs-1.2.0 opensearch-py-3.2.0 opentelemetry-api-1.45.2 pamqp-5.0.0 passlib-1.7.4 prometheus-client-0.26.0 prometheus-fastapi-instrumentator-8.1.0 propcache-0.5.4 protobuf-7.36.2 pyasn1-0.6.5 pycparser-3.12 pydantic-2.14.3 pydantic-core-2.50.4 pydantic-settings-2.16.3 python-dateutil-4.0.0 python-dotenv-1.2.4 python-jose-3.5.0 python-multipart-0.0.33 pyyaml-6.0.3 requests-2.34.2 rsa-4.9.1 six-1.17.0 sqlalchemy-2.1.8 starlette-1.10.0 structlog-26.1.0 typing-inspection-0.4.5 typing_extensions-4.16.0 tzdata-2026.6 urllib3-2.8.0 uvicorn-0.54.0 uvloop-0.23.0 watchfiles-1.3.0 websockets-17.4 yarl-1.25.1
+#35 45.37 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+#35 45.63 
+#35 45.63 [notice] A new release of pip is available: 24.0 -> 26.3
+#35 45.63 [notice] To update, run: pip install --upgrade pip
+#35 DONE 48.4s
+
+#36 [learning 6/8] RUN pip install --no-cache-dir --upgrade "wheel>=0.46.2" setuptools     && pip install --no-cache-dir -e .
+#36 CACHED
+
+#37 [learning 5/8] COPY cyber_range_core ./cyber_range_core
+#37 CACHED
+
+#38 [learning 4/8] COPY pyproject.toml ./
+#38 CACHED
+
+#39 [scenario 6/8] RUN pip install --no-cache-dir --upgrade "wheel>=0.46.2" setuptools     && pip install --no-cache-dir -e .
+#39 CACHED
+
+#40 [scenario 5/8] COPY cyber_range_core ./cyber_range_core
+#40 CACHED
+
+#41 [scenario 4/8] COPY pyproject.toml ./
+#41 CACHED
+
+#42 [events 5/8] COPY cyber_range_core ./cyber_range_core
+#42 CACHED
+
+#43 [events 6/8] RUN pip install --no-cache-dir --upgrade "wheel>=0.46.2" setuptools     && pip install --no-cache-dir -e .
+#43 CACHED
+
+#44 [events 4/8] COPY pyproject.toml ./
+#44 CACHED
+
+#45 [data 5/8] COPY cyber_range_core ./cyber_range_core
+#45 CACHED
+
+#46 [data 6/8] RUN pip install --no-cache-dir --upgrade "wheel>=0.46.2" setuptools     && pip install --no-cache-dir -e .
+#46 CACHED
+
+#47 [data 4/8] COPY pyproject.toml ./
+#47 CACHED
+
+#48 [portal 4/8] COPY pyproject.toml ./
+#48 CACHED
+
+#49 [portal 6/8] RUN pip install --no-cache-dir --upgrade "wheel>=0.46.2" setuptools     && pip install --no-cache-dir -e .
+#49 CACHED
+
+#50 [portal 5/8] COPY cyber_range_core ./cyber_range_core
+#50 CACHED
+
+#51 [iam 5/8] COPY cyber_range_core ./cyber_range_core
+#51 CACHED
+
+#52 [iam 4/8] COPY pyproject.toml ./
+#52 CACHED
+
+#53 [iam 6/8] RUN pip install --no-cache-dir --upgrade "wheel>=0.46.2" setuptools     && pip install --no-cache-dir -e .
+#53 CACHED
+
+#54 [orchestration 6/8] RUN pip install --no-cache-dir --upgrade "wheel>=0.46.2" setuptools     && pip install --no-cache-dir -e .
+#54 CACHED
+
+#55 [orchestration 4/8] COPY pyproject.toml ./
+#55 CACHED
+
+#56 [orchestration 5/8] COPY cyber_range_core ./cyber_range_core
+#56 CACHED
+
+#57 [events 7/8] COPY services/events_and_notification_service ./service
+#57 DONE 0.1s
+
+#58 [learning 7/8] COPY services/learning_service ./service
+#58 DONE 0.2s
+
+#59 [events 8/8] WORKDIR /app/service
+#59 ...
+
+#60 [monitoring 7/8] COPY services/monitoring_service ./service
+#60 DONE 0.2s
+
+#61 [data 7/8] COPY services/data_logging_service ./service
+#61 DONE 0.2s
+
+#62 [orchestration 7/8] COPY services/orchestration_service ./service
+#62 DONE 0.2s
+
+#63 [portal 7/8] COPY services/consumer_portal_service ./service
+#63 DONE 0.2s
+
+#64 [iam 7/8] COPY services/iam_service ./service
+#64 DONE 0.3s
+
+#65 [scenario 7/8] COPY services/scenario_service ./service
+#65 DONE 0.3s
+
+#59 [events 8/8] WORKDIR /app/service
+#59 DONE 0.2s
+
+#66 [learning 8/8] WORKDIR /app/service
+#66 DONE 0.3s
+
+#67 [events] exporting to image
+#67 exporting layers
+#67 ...
+
+#68 [monitoring 8/8] WORKDIR /app/service
+#68 DONE 0.3s
+
+#69 [data 8/8] WORKDIR /app/service
+#69 DONE 0.3s
+
+#70 [orchestration 8/8] WORKDIR /app/service
+#70 DONE 0.3s
+
+#71 [portal 8/8] WORKDIR /app/service
+#71 DONE 0.3s
+
+#72 [iam 8/8] WORKDIR /app/service
+#72 DONE 0.2s
+
+#73 [scenario 8/8] WORKDIR /app/service
+#73 DONE 0.2s
+
+#74 [scenario] exporting to image
+#74 ...
+
+#67 [events] exporting to image
+#67 exporting layers 2.6s done
+#67 writing image sha256:8879aa2bc246cbbc9101b1d8920ab5cf5aab894fe63e42b15350953d44539ede 0.1s done
+#67 naming to docker.io/sor/events-service 0.0s done
+#67 DONE 2.7s
+
+#74 [scenario] exporting to image
+#74 exporting layers 2.5s done
+#74 writing image sha256:bbac2d04a78c6f79a15a628fc50209d5a9650afad93720ed14a2d88dad50423e
+#74 ...
+
+#75 [events] resolving provenance for metadata file
+#75 DONE 0.0s
+
+#76 [learning] exporting to image
+#76 exporting layers 2.6s done
+#76 writing image sha256:b26c9409964feefa68f93b169fcf939d81f57583a3ffc9c2b99875a752da3446 0.1s done
+#76 naming to docker.io/sor/learning-service 0.0s done
+#76 DONE 2.8s
+
+#74 [scenario] exporting to image
+#74 writing image sha256:bbac2d04a78c6f79a15a628fc50209d5a9650afad93720ed14a2d88dad50423e 0.1s done
+#74 naming to docker.io/sor/scenario-service 0.0s done
+#74 DONE 2.7s
+
+#77 [monitoring] exporting to image
+#77 exporting layers 2.7s done
+#77 writing image sha256:2b184bc0b44001c1da6866754f97ad8b9bbf71b70ff86a8d69446bc99b9ff2b9 0.0s done
+#77 naming to docker.io/sor/monitoring-service 0.0s done
+#77 DONE 2.8s
+
+#78 [portal] exporting to image
+#78 exporting layers 2.6s done
+#78 writing image sha256:e67e4160944ec3343459812d0cfb585a8b5fc4953e8457382d56e813f0a24738 0.0s done
+#78 naming to docker.io/sor/consumer-portal-service 0.0s done
+#78 DONE 2.8s
+
+#79 [iam] exporting to image
+#79 exporting layers 2.6s done
+#79 writing image sha256:3b501554cb0ff3c1c2a5a847f56159bfba7495bd4f82b467a349a31f5fa4a905 0.1s done
+#79 naming to docker.io/sor/iam-service 0.0s done
+#79 DONE 2.8s
+
+#80 [orchestration] exporting to image
+#80 exporting layers 2.6s done
+#80 writing image sha256:b514af0ffa32bdefab8661f07a2554c8f3a78a80e974b88d5a51e7730b585691 0.1s done
+#80 naming to docker.io/sor/orchestration-service 0.0s done
+#80 DONE 2.8s
+
+#81 [data] exporting to image
+#81 exporting layers 2.7s done
+#81 writing image sha256:c7512d970efcfb7bb154395611ae9c5d6c766fd45f098262361e56709150a9d0 0.0s done
+#81 naming to docker.io/sor/data-logging-service 0.0s done
+#81 DONE 2.9s
+
+#82 [learning] resolving provenance for metadata file
+#82 DONE 0.1s
+
+#83 [portal] resolving provenance for metadata file
+#83 DONE 0.1s
+
+#84 [monitoring] resolving provenance for metadata file
+#84 DONE 0.1s
+
+#85 [orchestration] resolving provenance for metadata file
+#85 DONE 0.1s
+
+#86 [iam] resolving provenance for metadata file
+#86 DONE 0.0s
+
+#87 [scenario] resolving provenance for metadata file
+#87 DONE 0.2s
+
+#88 [data] resolving provenance for metadata file
+#88 DONE 0.0s
+ Image sor/scenario-service Built 
+ Image sor/learning-service Built 
+ Image sor/events-service Built 
+ Image sor/monitoring-service Built 
+ Image sor/data-logging-service Built 
+ Image sor/egress-guard Built 
+ Image sor/orchestration-service Built 
+ Image sor/consumer-portal-service Built 
+ Image sor/iam-service Built 

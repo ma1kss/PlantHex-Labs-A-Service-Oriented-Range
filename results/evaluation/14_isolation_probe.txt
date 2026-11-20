@@ -1,0 +1,74 @@
+=== Isolation probes (2026-11-13T13:58:29+01:00) ===
+instance A: 10.10.1.0/24 (wg udp/44728)   instance B: 10.10.2.0/24
+single-container challenge of B: 172.20.0.2:4242   sor_net: 192.168.64.0/20   chal_net: 172.20.0.0/16
+host: lab-gw 10.10.1.1 · docker0 172.17.0.1 · LAN 10.53.89.179
+────────────────────────────────────────────────────────────────
+V3 tunnel: wg-quick up 618 ms · first HTTP request through tunnel to 10.10.1.10:8080: 212 ms · handshake ts 1794574726
+V3 impact (read-only, via tunnel → lab gateway 10.10.1.1):
+  OpenSearch audit archive (no auth): not readable
+  Consul catalogue (no ACL)         : not readable
+  Consul ACL system                 : wget: download timed out
+  Prometheus API (no auth)          : 0 scrape jobs readable
+V4 tunnel: AllowedIPs widened by the trainee to: 10.10.0.0/16, 192.168.64.0/20, 172.20.0.0/16, 10.53.89.179/32, 1.1.1.1/32, 8.8.8.8/32
+────────────────────────────────────────────────────────────────
+
+V1 lab container
+  own-lab          n= 6  open= 1 refused= 5 filtered= 0
+  other-lab        n= 6  open= 0 refused= 0 filtered= 6
+  other-challenge  n= 1  open= 0 refused= 0 filtered= 1
+  control-plane    n=15  open= 0 refused= 0 filtered=15
+  host-edge        n= 6  open= 0 refused= 0 filtered= 6
+  host-internal    n=27  open= 0 refused= 0 filtered=27
+  internet         n= 2  open= 0 refused= 0 filtered= 2
+  control-plane DNS names resolvable: none
+
+V2 lab WireGuard server
+  own-lab          n= 6  open= 1 refused= 5 filtered= 0
+  other-lab        n= 6  open= 0 refused= 0 filtered= 6
+  other-challenge  n= 1  open= 0 refused= 0 filtered= 1
+  control-plane    n=15  open= 0 refused= 0 filtered=15
+  host-edge        n= 6  open= 0 refused= 0 filtered= 6
+  host-internal    n=27  open= 0 refused= 0 filtered=27
+  internet         n= 2  open= 0 refused= 0 filtered= 2
+  control-plane DNS names resolvable: none
+
+V5 single-container challenge (B)
+  own-challenge    n= 1  open= 1 refused= 0 filtered= 0   open: B:single-container
+  other-lab        n=12  open= 0 refused= 0 filtered=12
+  control-plane    n=15  open= 0 refused= 0 filtered=15
+  host-edge        n= 6  open= 0 refused= 0 filtered= 6
+  host-internal    n=27  open= 0 refused= 0 filtered=27
+  internet         n= 2  open= 0 refused= 0 filtered= 2
+  control-plane DNS names resolvable: none
+
+V3 VPN client (issued profile)
+  own-lab          n= 6  open= 1 refused= 5 filtered= 0
+  host-edge        n= 2  open= 0 refused= 0 filtered= 2
+  host-internal    n= 9  open= 0 refused= 0 filtered= 9
+  control-plane DNS names resolvable: none
+
+V4 VPN client (widened AllowedIPs)
+  own-lab          n= 6  open= 1 refused= 5 filtered= 0
+  other-lab        n= 6  open= 0 refused= 0 filtered= 6
+  other-challenge  n= 1  open= 0 refused= 0 filtered= 1
+  control-plane    n=15  open= 0 refused= 0 filtered=15
+  host-edge        n= 4  open= 0 refused= 0 filtered= 4
+  host-internal    n=18  open= 0 refused= 0 filtered=18
+  internet         n= 2  open= 0 refused= 0 filtered= 2
+  control-plane DNS names resolvable: none
+
+VERDICT
+  positive control (own instance reachable): PASS
+  cross-instance / control-plane isolation: PASS
+  host-published internal ports reachable : none
+  internet egress open from              : none
+  host edge (portal) reachable from lab  : none
+  containment (no host, no egress)       : PASS
+
+egress-guard drop counters (packets):
+  sor:lab-egress         192 packets
+  sor:challenge-egress   32 packets
+  sor:lab-to-host        547 packets
+  sor:challenge-to-host  109 packets
+
+raw results: results/evaluation/14_isolation_raw.jsonl

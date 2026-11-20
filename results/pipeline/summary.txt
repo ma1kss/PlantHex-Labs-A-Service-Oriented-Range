@@ -1,0 +1,8 @@
+1 static ok 0
+2 secrets ok 0
+3 build ok 54
+4 scan ok 82
+5 deploy ok 10
+6 ready ok 51
+7 verify ok 53
+pipeline passed in 250 s

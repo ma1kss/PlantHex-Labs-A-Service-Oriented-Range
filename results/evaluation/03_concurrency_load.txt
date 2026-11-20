@@ -1,0 +1,12 @@
+=== Concurrency load: 200 requests, 20 parallel (2026-11-13T13:51:56+01:00) ===
+endpoint: GET /learning/leaderboard?limit=100
+────────────────────────────────────────────────────────────────
+wall time     : 3395 ms
+throughput    : 58.9 req/s
+non-200s      : 0 / 200
+latency       : n=200  min=108.2ms  p50=282.5ms  p95=406.8ms  p99=534.2ms  max=650.0ms  mean=288.8ms
+────────────────────────────────────────────────────────────────
+concurrent logins (bcrypt-bound): 20 requests, 20 parallel
+wall time     : 10360 ms
+non-200s      : 0 / 20
+latency       : n=20  min=651.5ms  p50=9437.3ms  p95=9482.3ms  p99=9490.5ms  max=9492.5ms  mean=7788.0ms

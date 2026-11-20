@@ -1,0 +1,30 @@
+=== Database stats (2026-11-13T13:57:25+01:00) ===
+── row counts / table sizes ──
+access_grants | 23 | 40 kB
+announcements | 1 | 32 kB
+challenges | 3 | 32 kB
+ctf_event_challenges | 0 | 24 kB
+ctf_events | 0 | 32 kB
+docker_sessions | 195 | 336 kB
+docker_specs | 1 | 32 kB
+event_logs | 28 | 136 kB
+event_solves | 0 | 32 kB
+exercise_enrolments | 0 | 72 kB
+exercises | 0 | 48 kB
+lab_specs | 2 | 32 kB
+launches | 21 | 80 kB
+participants | 2 | 56 kB
+platform_settings | 2 | 24 kB
+resources | 2 | 80 kB
+revoked_tokens | 2 | 40 kB
+session_revocations | 129 | 88 kB
+solves | 2 | 120 kB
+submissions | 256 | 184 kB
+teams | 1 | 40 kB
+users | 3 | 80 kB
+
+── integrity: participants without an IAM user (expect 0 rows) ──
+── integrity: participant score vs sum of solves (expect 0 rows) ──
+── integrity: solves referencing missing challenges (expect 0 rows) ──
+── activity: submissions in the last 24h ──
+204 | 0

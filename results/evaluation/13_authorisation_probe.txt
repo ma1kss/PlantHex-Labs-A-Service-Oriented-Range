@@ -1,0 +1,45 @@
+=== Authorisation probes (2026-11-13T13:57:38+01:00) ===
+────────────────────────────────────────────────────────────────
+A/B/E. route × role and forged-token matrix (edge + direct-to-service)
+  routes inventoried : 81  (roles: player, instructor, admin)
+  role matrix [edge  ]: 243/243 conform, 0 violations
+  role matrix [direct]: 243/243 conform, 0 violations
+  forged/invalid tokens (401 on every route expected):
+    missing              edge  81/81   direct  81/81
+    malformed            edge  81/81   direct  81/81
+    tampered payload     edge  81/81   direct  81/81
+    attacker RSA key     edge  81/81   direct  81/81
+    alg=none             edge  81/81   direct  81/81
+    HS256 w/ public key  edge  81/81   direct  81/81
+    service event key    edge  81/81   direct  81/81
+    expired (valid sig)  edge  81/81   direct  81/81
+    wrong issuer         edge  81/81   direct  81/81
+  compromised-service forgery (GET /iam/settings/registration-secret): {'HS256 w/ public key': 401, 'service event key': 401} -> all rejected
+  /internal/* through the edge: {'anonymous': 404, 'admin': 404} (404 = never proxied)
+  PASS  role matrix and forged-token matrix: 0 violations
+
+C. object-level / escalation
+  PASS  trainee B cannot fetch A's VPN profile (HTTP 403)
+  PASS  trainee B cannot tear down A's lab instance (HTTP 403)
+  PASS  A's instance is not listed in B's sessions
+  PASS  owner A can fetch own VPN profile (positive control, HTTP 200)
+  PASS  trainee cannot read an administrator's profile (HTTP 403)
+  PASS  instructor cannot assign roles (HTTP 403)
+  PASS  trainee cannot promote itself (HTTP 403)
+  PASS  self-registration with the valid secret cannot request admin (HTTP 403)
+  PASS  self-registration with a wrong enrolment secret is refused (HTTP 403)
+  PASS  login with a wrong password is refused (HTTP 401)
+
+D. sessions (SEC-022)
+  PASS  demoted instructor: old token refused at the edge (HTTP 401)
+  PASS  deleted account: old token refused (HTTP 401)
+  PASS  logout: the token is refused afterwards (HTTP 401)
+  PASS  logout revoked only that token; the user's other session works (HTTP 200)
+  PASS  administrator revoked all sessions of a user: token refused (HTTP 401)
+  PASS  idle timeout (set to 5 s): active token works (HTTP 200), after 7 s idle refused (HTTP 401)
+
+G. login throttling
+  PASS  6 wrong passwords → lockout (codes: 401 401 401 401 401 429); correct password during lockout → HTTP 429
+  PASS  security alert login_lockout surfaced by the monitoring service
+────────────────────────────────────────────────────────────────
+SUMMARY: 19 passed, 0 failed, 0 notes

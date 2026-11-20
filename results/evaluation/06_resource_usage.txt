@@ -1,0 +1,55 @@
+=== Resource usage (2026-11-13T13:57:24+01:00) ===
+── docker stats (one-shot) ──
+NAME                CPU %     MEM USAGE / LIMIT     NET I/O
+sor_consul          0.82%     44.49MiB / 13.47GiB   2.76MB / 5MB
+sor_data            0.20%     73.77MiB / 13.47GiB   2.13MB / 5.64MB
+sor_docker_proxy    0.00%     33.16MiB / 13.47GiB   619kB / 2.02MB
+sor_egress_guard    0.00%     2.262MiB / 13.47GiB   0B / 0B
+sor_events          6.28%     76.38MiB / 13.47GiB   892kB / 528kB
+sor_grafana         0.09%     48.78MiB / 13.47GiB   62.6kB / 12kB
+sor_iam             0.21%     79.02MiB / 13.47GiB   1.69MB / 2.75MB
+sor_learning        6.05%     78.66MiB / 13.47GiB   1.65MB / 2.03MB
+sor_monitoring      0.24%     60.93MiB / 13.47GiB   160kB / 520kB
+sor_opensearch      0.88%     1.303GiB / 13.47GiB   1.84MB / 5.85MB
+sor_orchestration   0.27%     74.27MiB / 13.47GiB   75.2kB / 339kB
+sor_portainer       0.04%     20.58MiB / 13.47GiB   25.1kB / 126B
+sor_portal          0.40%     57.29MiB / 13.47GiB   12.8MB / 16.4MB
+sor_postgres        0.02%     55.82MiB / 13.47GiB   3.2MB / 4.8MB
+sor_prometheus      0.74%     79.48MiB / 13.47GiB   21.9MB / 2.17MB
+sor_rabbitmq        45.91%    182.4MiB / 13.47GiB   1.69MB / 3.08MB
+sor_scenario        5.49%     87.26MiB / 13.47GiB   2.6MB / 2.2MB
+
+── SOR image sizes ──
+sor/chal/d11f86d9-242b-4a51-9540-740720af1621:4f0c03218980	80.6MB
+sor/consumer-portal-service:latest	352MB
+sor/data-logging-service:latest	352MB
+sor/egress-guard:latest	9.64MB
+sor/events-service:latest	352MB
+sor/hello-service:latest	279MB
+sor/iam-service:latest	352MB
+sor/learning-service:latest	352MB
+sor/monitoring-service:latest	352MB
+sor/orchestration-service:latest	352MB
+sor/resource-service:latest	332MB
+sor/scenario-service:latest	352MB
+sor/wireguard:latest	14.3MB
+
+── volume sizes ──
+VOLUME                                   SIZE
+infrastructure_portainer_data            1.05MB
+infrastructure_grafana_data              1.053MB
+infrastructure_opensearch_data           3.535MB
+infrastructure_prometheus_data           15.09MB
+infrastructure_challenge_files           109.4kB
+infrastructure_postgres_data             66.74MB
+infrastructure_rabbitmq_data             4.505MB
+infrastructure_resource_terraform        0B
+infrastructure_consul_data               16.82MB
+
+── totals ──
+containers running: 17
+host memory:
+                 total        used        free      shared  buff/cache   available
+  Mem:            13Gi       5.3Gi       607Mi        63Mi       8.0Gi       8.2Gi
+  Swap:          4.0Gi       300Ki       4.0Gi
+host load: 3.65 2.89 2.44 4/1409 436438

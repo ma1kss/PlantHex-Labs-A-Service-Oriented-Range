@@ -1,0 +1,577 @@
+x-jwt-verify: &jwt-verify
+  JWT_ALGORITHM:        RS256
+  JWT_ISSUER:           cyber-range-iam
+  JWT_PUBLIC_KEY_FILE:  /run/keys/jwt_public.pem
+
+x-event-security: &event-security
+  EVENT_SECURITY:            enforce
+  EVENT_SIGNING_KEY_FILE:    /run/secrets/evt_signing
+  EVENT_VERIFY_KEYS_DIR:     /run/keys/evt_pub
+  EVENT_ENCRYPTION_KEY_FILE: /run/secrets/event_enc
+
+x-public-keys: &public-keys
+  - ./secrets/jwt_public.pem:/run/keys/jwt_public.pem:ro
+  - ./secrets/evt_pub:/run/keys/evt_pub:ro
+
+services:
+
+  # Infrastructure
+
+  consul:
+    image: hashicorp/consul:1.19@sha256:e244c64df77ab3586f177f1692e98575086eb40343dc82a6320f5e79543490eb
+    container_name: sor_consul
+    command: >
+      agent -server -ui
+      -node=consul-1
+      -bootstrap-expect=1
+      -client=0.0.0.0
+      -bind=0.0.0.0
+    ports:
+      - "127.0.0.1:8500:8500"     # HTTP API + UI (operator access, loopback only)
+      - "127.0.0.1:8600:8600/tcp" # DNS
+      - "127.0.0.1:8600:8600/udp"
+    volumes:
+      - consul_data:/consul/data
+      # Agent config (extends the 7-day server_rejoin_age_max guard).
+      - ./consul_config:/consul/config   # rw: image entrypoint chowns this dir
+    healthcheck:
+      test: ["CMD", "consul", "members"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    networks: [sor_net]
+
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine@sha256:606d8c0d6b3c18d1da9afc53bc7cdb2a8d5486df91b5a9830e9e07626c9ae281
+    container_name: sor_rabbitmq
+    ports:
+      - "127.0.0.1:5672:5672"    # AMQP (operator access, loopback only)
+      - "127.0.0.1:15672:15672"  # Management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 20s
+    restart: unless-stopped
+    networks: [sor_net]
+
+  opensearch:
+    image: opensearchproject/opensearch:2.17.1@sha256:1193b7c29c5d63028523728243cc4da047ac49f697a8f8105e5aeee2f89bcc4c
+    container_name: sor_opensearch
+    environment:
+      - discovery.type=single-node
+      - DISABLE_SECURITY_PLUGIN=true
+      - DISABLE_INSTALL_DEMO_CONFIG=true
+      - bootstrap.memory_lock=true
+      - OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m
+    ulimits:
+      memlock: { soft: -1, hard: -1 }
+      nofile:  { soft: 65536, hard: 65536 }
+    ports:
+      - "127.0.0.1:9200:9200"     # operator access only (loopback)
+    volumes:
+      - opensearch_data:/usr/share/opensearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:9200/_cluster/health >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 40s
+    restart: unless-stopped
+    networks: [sor_net]
+
+  postgres:
+    # Shared relational store; every service connects with its own role and
+    # owns only its own tables (db-init below).
+    image: postgres:16-alpine@sha256:4e6e670bb069649261c9c18031f0aded7bb249a5b6664ddec29c013a89310d50
+    container_name: sor_postgres
+    environment:
+      POSTGRES_USER: sor
+      POSTGRES_PASSWORD: sor
+      POSTGRES_DB: sor
+    ports:
+      - "127.0.0.1:5432:5432"     # operator access only (loopback)
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sor -d sor"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    networks: [sor_net]
+
+  db-init:
+    # One-shot: per-service database roles and table ownership (SEC-008).
+    image: postgres:16-alpine@sha256:4e6e670bb069649261c9c18031f0aded7bb249a5b6664ddec29c013a89310d50
+    container_name: sor_db_init
+    entrypoint: ["/bin/sh", "/init.sh"]
+    environment:
+      PGHOST: sor_postgres
+      PGUSER: sor
+      PGPASSWORD: sor
+      PGDATABASE: sor
+    volumes:
+      - ./db_init/init.sh:/init.sh:ro
+    secrets: [db_iam, db_scenario, db_events, db_learning, db_orchestration]
+    depends_on:
+      postgres: { condition: service_healthy }
+    restart: "no"
+    networks: [sor_net]
+
+  rabbit-init:
+    # One-shot: per-service broker accounts and permissions (SEC-008).
+    image: sor/iam-service
+    container_name: sor_rabbit_init
+    entrypoint: ["/bin/sh", "/init.sh"]
+    volumes:
+      - ./rabbit_init/init.sh:/init.sh:ro
+    secrets: [rmq_admin, rmq_iam, rmq_scenario, rmq_events, rmq_monitoring,
+              rmq_data, rmq_learning, rmq_orchestration, rmq_portal]
+    depends_on:
+      rabbitmq: { condition: service_healthy }
+    restart: "no"
+    networks: [sor_net]
+
+  portainer:
+    image: portainer/portainer-ce:2.39.1@sha256:1ae8e65d50ca5498cb2c33e617495a1e3ef245b0d2392b4a44c70ae09b822891
+    container_name: sor_portainer
+    command: -H unix:///var/run/docker.sock
+    ports:
+      - "127.0.0.1:9000:9000"     # operator access only (loopback)
+      - "127.0.0.1:9443:9443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    restart: unless-stopped
+    networks: [sor_net]
+
+  docker-proxy:
+    # Filtering Docker API proxy for Scenario Management (SEC-008): only the
+    # container, network, image and build endpoints are reachable; exec,
+    # volumes, system, swarm, secrets, plugins, … are refused.
+    image: tecnativa/docker-socket-proxy:v0.5.0@sha256:1f5038b54f06c3e18422902cf00ba21803d1c97805aae032e5e6673d532d3459
+    container_name: sor_docker_proxy
+    environment:
+      CONTAINERS: "1"
+      NETWORKS:   "1"
+      IMAGES:     "1"
+      BUILD:      "1"
+      INFO:       "1"
+      VERSION:    "1"
+      POST:       "1"
+      EVENTS:     "0"
+      EXEC:       "0"
+      VOLUMES:    "0"
+      SYSTEM:     "0"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+    networks: [sor_docker_api]
+
+  egress-guard:
+    # Host-level containment of exercise networks (Zones 1–2, F04/F18):
+    # laboratory and challenge networks reach only themselves — no internet,
+    # no other networks, no host services (SEC-001, SEC-002, SEC-010, SEC-027).
+    build: ./egress_guard
+    image: sor/egress-guard
+    container_name: sor_egress_guard
+    network_mode: host
+    cap_add: [NET_ADMIN, NET_RAW]
+    environment:
+      LAB_POOL:         10.10.0.0/16
+      CHALLENGE_SUBNET: 172.20.0.0/16
+      INTERVAL:         "30"
+    restart: unless-stopped
+
+  prometheus:
+    # Scrapes /metrics from every SOR service (Consul discovery) and
+    # evaluates the alerting rules in prometheus/alerts.yml.
+    image: prom/prometheus:v2.54.1@sha256:f6639335d34a77d9d9db382b92eeb7fc00934be8eae81dbc03b31cfe90411a94
+    container_name: sor_prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=15d
+      - --web.enable-lifecycle
+    ports:
+      - "127.0.0.1:9090:9090"     # operator access only (loopback)
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus/alerts.yml:/etc/prometheus/alerts.yml:ro
+      - prometheus_data:/prometheus
+    depends_on:
+      consul: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:9090/-/healthy >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    networks: [sor_net]
+
+  grafana:
+    image: grafana/grafana:11.2.0@sha256:408afb9726de5122b00a2576763a8a57a3c86d5b0eff5305bc994ceb3eb96c3f
+    container_name: sor_grafana
+    environment:
+      GF_SECURITY_ADMIN_USER:        admin
+      GF_SECURITY_ADMIN_PASSWORD:    admin
+      GF_USERS_DEFAULT_THEME:        dark
+      GF_AUTH_ANONYMOUS_ENABLED:     "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE:    Viewer
+      GF_SECURITY_ALLOW_EMBEDDING:   "true"
+    ports:
+      - "127.0.0.1:3000:3000"     # operator access only (loopback)
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      prometheus: { condition: service_started }
+    restart: unless-stopped
+    networks: [sor_net]
+
+  # SOR services
+
+  iam:
+    build:
+      context: ..
+      dockerfile: services/iam_service/Dockerfile
+    image: sor/iam-service
+    container_name: sor_iam
+    environment:
+      <<: [*jwt-verify, *event-security]
+      CONSUL_HOST:                sor_consul
+      RABBITMQ_URL:               amqp://svc_iam@sor_rabbitmq:5672/
+      RABBITMQ_PASSWORD_FILE:     /run/secrets/rmq_pw
+      DATABASE_URL:               postgresql+asyncpg://svc_iam@sor_postgres:5432/sor
+      DATABASE_USER:              svc_iam
+      DATABASE_PASSWORD_FILE:     /run/secrets/db_pw
+      PUBLIC_HOSTNAME:            sor_iam
+      PORT:                       "8001"
+      JWT_PRIVATE_KEY_FILE:       /run/secrets/jwt_private
+      JWT_TTL_SECONDS:            "28800"   # 8 h; revocable at the edge (SEC-022)
+      SESSION_IDLE_TIMEOUT_SECONDS: "1800"
+      BOOTSTRAP_ADMIN_USERNAME:   charon
+      BOOTSTRAP_ADMIN_PASSWORD:   charon
+      REGISTRATION_SECRET:        PxL33980
+    secrets:
+      - { source: rmq_iam, target: rmq_pw }
+      - { source: jwt_private, target: jwt_private }
+      - { source: evt_iam, target: evt_signing }
+      - event_enc
+      - { source: db_iam, target: db_pw }
+    volumes: *public-keys
+    expose: ["8001"]
+    depends_on:
+      consul:   { condition: service_healthy }
+      rabbitmq: { condition: service_healthy }
+      rabbit-init: { condition: service_completed_successfully }
+      db-init:  { condition: service_completed_successfully }
+    restart: unless-stopped
+    networks: [sor_net]
+
+  scenario:
+    build:
+      context: ..
+      dockerfile: services/scenario_service/Dockerfile
+    image: sor/scenario-service
+    container_name: sor_scenario
+    environment:
+      <<: [*jwt-verify, *event-security]
+      CONSUL_HOST:           sor_consul
+      RABBITMQ_URL:          amqp://svc_scenario@sor_rabbitmq:5672/
+      RABBITMQ_PASSWORD_FILE: /run/secrets/rmq_pw
+      DATABASE_URL:          postgresql+asyncpg://svc_scenario@sor_postgres:5432/sor
+      DATABASE_USER:         svc_scenario
+      DATABASE_PASSWORD_FILE: /run/secrets/db_pw
+      PUBLIC_HOSTNAME:       sor_scenario
+      PORT:                  "8002"
+      CHALLENGE_FILES_DIR:   /data/challenges
+      FLAG_KEYS_FILE:        /run/secrets/flag_keys
+      # Docker via the filtering proxy, not the raw socket (SEC-008).
+      DOCKER_HOST:                   tcp://sor_docker_proxy:2375
+      PLAYER_SESSION_HOSTNAME:       localhost
+      DOCKER_ALLOWED_BASE_IMAGES:    "ubuntu:22.04,ubuntu:latest,alpine:latest,alpine:3.20,debian:bookworm-slim,python:3.11-slim,python:3.12-slim,nginx:1.27-alpine"
+      DOCKER_PLAYER_NETWORK:         sor_chal_net
+      DOCKER_PLAYER_SUBNET:          172.20.0.0/16
+    secrets:
+      - { source: rmq_scenario, target: rmq_pw }
+      - { source: evt_scenario, target: evt_signing }
+      - event_enc
+      - flag_keys
+      - { source: db_scenario, target: db_pw }
+    volumes:
+      - challenge_files:/data/challenges
+      - ./secrets/jwt_public.pem:/run/keys/jwt_public.pem:ro
+      - ./secrets/evt_pub:/run/keys/evt_pub:ro
+    expose: ["8002"]
+    depends_on:
+      consul:       { condition: service_healthy }
+      rabbitmq:     { condition: service_healthy }
+      db-init:      { condition: service_completed_successfully }
+      docker-proxy: { condition: service_started }
+      rabbit-init:  { condition: service_completed_successfully }
+    restart: unless-stopped
+    networks: [sor_net, sor_docker_api]
+
+  events:
+    build:
+      context: ..
+      dockerfile: services/events_and_notification_service/Dockerfile
+    image: sor/events-service
+    container_name: sor_events
+    environment:
+      <<: [*jwt-verify, *event-security]
+      CONSUL_HOST:        sor_consul
+      RABBITMQ_URL:       amqp://svc_events@sor_rabbitmq:5672/
+      RABBITMQ_PASSWORD_FILE: /run/secrets/rmq_pw
+      DATABASE_URL:       postgresql+asyncpg://svc_events@sor_postgres:5432/sor
+      DATABASE_USER:      svc_events
+      DATABASE_PASSWORD_FILE: /run/secrets/db_pw
+      PUBLIC_HOSTNAME:    sor_events
+      PORT:               "8004"
+      EVENTS_QUEUE:       events-service.log
+    secrets:
+      - { source: rmq_events, target: rmq_pw }
+      - { source: evt_events, target: evt_signing }
+      - event_enc
+      - { source: db_events, target: db_pw }
+    volumes: *public-keys
+    expose: ["8004"]
+    depends_on:
+      consul:   { condition: service_healthy }
+      rabbitmq: { condition: service_healthy }
+      rabbit-init: { condition: service_completed_successfully }
+      db-init:  { condition: service_completed_successfully }
+    restart: unless-stopped
+    networks: [sor_net]
+
+  monitoring:
+    build:
+      context: ..
+      dockerfile: services/monitoring_service/Dockerfile
+    image: sor/monitoring-service
+    container_name: sor_monitoring
+    environment:
+      <<: [*jwt-verify, *event-security]
+      CONSUL_HOST:             sor_consul
+      RABBITMQ_URL:            amqp://svc_monitoring@sor_rabbitmq:5672/
+      RABBITMQ_PASSWORD_FILE: /run/secrets/rmq_pw
+      PUBLIC_HOSTNAME:         sor_monitoring
+      PORT:                    "8005"
+      PROMETHEUS_URL:          http://sor_prometheus:9090
+      PROMETHEUS_PUBLIC_URL:   http://localhost:9090
+      GRAFANA_PUBLIC_URL:      http://localhost:3000
+      GRAFANA_DASHBOARD_UID:   sor-overview
+    secrets:
+      - { source: rmq_monitoring, target: rmq_pw }
+      - { source: evt_monitoring, target: evt_signing }
+      - event_enc
+    volumes: *public-keys
+    expose: ["8005"]
+    depends_on:
+      consul:     { condition: service_healthy }
+      rabbitmq:   { condition: service_healthy }
+      rabbit-init: { condition: service_completed_successfully }
+      prometheus: { condition: service_started }
+    restart: unless-stopped
+    networks: [sor_net]
+
+  data:
+    build:
+      context: ..
+      dockerfile: services/data_logging_service/Dockerfile
+    image: sor/data-logging-service
+    container_name: sor_data
+    environment:
+      <<: [*jwt-verify, *event-security]
+      CONSUL_HOST:        sor_consul
+      RABBITMQ_URL:       amqp://svc_data@sor_rabbitmq:5672/
+      RABBITMQ_PASSWORD_FILE: /run/secrets/rmq_pw
+      PUBLIC_HOSTNAME:    sor_data
+      PORT:               "8007"
+      OPENSEARCH_HOSTS:   http://sor_opensearch:9200
+      DATA_QUEUE:         data-logging.capture
+    secrets:
+      - { source: rmq_data, target: rmq_pw }
+      - { source: evt_data, target: evt_signing }
+      - event_enc
+    volumes: *public-keys
+    expose: ["8007"]
+    depends_on:
+      consul:     { condition: service_healthy }
+      rabbitmq:   { condition: service_healthy }
+      rabbit-init: { condition: service_completed_successfully }
+      opensearch: { condition: service_healthy }
+    restart: unless-stopped
+    networks: [sor_net]
+
+  learning:
+    build:
+      context: ..
+      dockerfile: services/learning_service/Dockerfile
+    image: sor/learning-service
+    container_name: sor_learning
+    environment:
+      <<: [*jwt-verify, *event-security]
+      CONSUL_HOST:        sor_consul
+      RABBITMQ_URL:       amqp://svc_learning@sor_rabbitmq:5672/
+      RABBITMQ_PASSWORD_FILE: /run/secrets/rmq_pw
+      DATABASE_URL:       postgresql+asyncpg://svc_learning@sor_postgres:5432/sor
+      DATABASE_USER:      svc_learning
+      DATABASE_PASSWORD_FILE: /run/secrets/db_pw
+      PUBLIC_HOSTNAME:    sor_learning
+      PORT:               "8008"
+      POINTS_EASY:        "10"
+      POINTS_MEDIUM:      "20"
+      POINTS_HARD:        "30"
+      POINTS_DEFAULT:     "10"
+      LEARNING_QUEUE:     learning-service.scoring
+    secrets:
+      - { source: rmq_learning, target: rmq_pw }
+      - { source: evt_learning, target: evt_signing }
+      - event_enc
+      - { source: db_learning, target: db_pw }
+    volumes: *public-keys
+    expose: ["8008"]
+    depends_on:
+      consul:   { condition: service_healthy }
+      rabbitmq: { condition: service_healthy }
+      rabbit-init: { condition: service_completed_successfully }
+      db-init:  { condition: service_completed_successfully }
+    restart: unless-stopped
+    networks: [sor_net]
+
+  orchestration:
+    build:
+      context: ..
+      dockerfile: services/orchestration_service/Dockerfile
+    image: sor/orchestration-service
+    container_name: sor_orchestration
+    environment:
+      <<: [*jwt-verify, *event-security]
+      CONSUL_HOST:        sor_consul
+      RABBITMQ_URL:       amqp://svc_orchestration@sor_rabbitmq:5672/
+      RABBITMQ_PASSWORD_FILE: /run/secrets/rmq_pw
+      DATABASE_URL:       postgresql+asyncpg://svc_orchestration@sor_postgres:5432/sor
+      DATABASE_USER:      svc_orchestration
+      DATABASE_PASSWORD_FILE: /run/secrets/db_pw
+      PUBLIC_HOSTNAME:    sor_orchestration
+      PORT:               "8009"
+      DOWNSTREAM_FALLBACK: "scenario-service=http://sor_scenario:8002,iam-service=http://sor_iam:8001,learning-service=http://sor_learning:8008,monitoring-service=http://sor_monitoring:8005"
+    secrets:
+      - { source: rmq_orchestration, target: rmq_pw }
+      - { source: evt_orchestration, target: evt_signing }
+      - event_enc
+      - { source: db_orchestration, target: db_pw }
+    volumes: *public-keys
+    expose: ["8009"]
+    depends_on:
+      consul:   { condition: service_healthy }
+      rabbitmq: { condition: service_healthy }
+      rabbit-init: { condition: service_completed_successfully }
+      db-init:  { condition: service_completed_successfully }
+    restart: unless-stopped
+    networks: [sor_net]
+
+  # Consumer & Portal (F14 + F16) — the single outward-facing edge
+
+  portal:
+    build:
+      context: ..
+      dockerfile: services/consumer_portal_service/Dockerfile
+    image: sor/consumer-portal-service
+    container_name: sor_portal
+    environment:
+      <<: [*jwt-verify, *event-security]
+      CONSUL_HOST:          sor_consul
+      RABBITMQ_URL:         amqp://svc_portal@sor_rabbitmq:5672/
+      RABBITMQ_PASSWORD_FILE: /run/secrets/rmq_pw
+      PUBLIC_HOSTNAME:      sor_portal
+      PORT:                 "8006"
+      DOWNSTREAM_FALLBACK:  "iam-service=http://sor_iam:8001,scenario-service=http://sor_scenario:8002,events-service=http://sor_events:8004,monitoring-service=http://sor_monitoring:8005,data-logging-service=http://sor_data:8007,learning-service=http://sor_learning:8008,orchestration-service=http://sor_orchestration:8009"
+      SSL_CERTFILE:         /certs/server.crt
+      SSL_KEYFILE:          /certs/server.key
+    secrets:
+      - { source: rmq_portal, target: rmq_pw }
+      - { source: evt_portal, target: evt_signing }
+      - event_enc
+    ports:
+      - "8000:8006"        # the platform's only public port (HTTPS)
+      - "8443:8006"
+    volumes:
+      - ../services/consumer_portal_service/web:/app/service/web:ro
+      - ./certs:/certs:ro
+      - ./secrets/jwt_public.pem:/run/keys/jwt_public.pem:ro
+      - ./secrets/evt_pub:/run/keys/evt_pub:ro
+    depends_on:
+      consul:        { condition: service_healthy }
+      rabbit-init:   { condition: service_completed_successfully }
+      iam:           { condition: service_started }
+      scenario:      { condition: service_started }
+      events:        { condition: service_started }
+      monitoring:    { condition: service_started }
+      data:          { condition: service_started }
+      learning:      { condition: service_started }
+      orchestration: { condition: service_started }
+    restart: unless-stopped
+    networks: [sor_net]
+
+secrets:
+  jwt_private:       { file: ./secrets/jwt_private.pem }
+  event_enc:         { file: ./secrets/event_enc.key }
+  flag_keys:         { file: ./secrets/flag_keys }
+  evt_iam:           { file: ./secrets/evt_iam-service.pem }
+  evt_scenario:      { file: ./secrets/evt_scenario-service.pem }
+  evt_events:        { file: ./secrets/evt_events-service.pem }
+  evt_monitoring:    { file: ./secrets/evt_monitoring-service.pem }
+  evt_data:          { file: ./secrets/evt_data-logging-service.pem }
+  evt_learning:      { file: ./secrets/evt_learning-service.pem }
+  evt_orchestration: { file: ./secrets/evt_orchestration-service.pem }
+  evt_portal:        { file: ./secrets/evt_consumer-portal-service.pem }
+  db_iam:            { file: ./secrets/db_iam.pw }
+  db_scenario:       { file: ./secrets/db_scenario.pw }
+  db_events:         { file: ./secrets/db_events.pw }
+  db_learning:       { file: ./secrets/db_learning.pw }
+  db_orchestration:  { file: ./secrets/db_orchestration.pw }
+  rmq_admin:         { file: ./secrets/rmq_admin.pw }
+  rmq_iam:           { file: ./secrets/rmq_iam.pw }
+  rmq_scenario:      { file: ./secrets/rmq_scenario.pw }
+  rmq_events:        { file: ./secrets/rmq_events.pw }
+  rmq_monitoring:    { file: ./secrets/rmq_monitoring.pw }
+  rmq_data:          { file: ./secrets/rmq_data.pw }
+  rmq_learning:      { file: ./secrets/rmq_learning.pw }
+  rmq_orchestration: { file: ./secrets/rmq_orchestration.pw }
+  rmq_portal:        { file: ./secrets/rmq_portal.pw }
+
+volumes:
+  consul_data:
+  rabbitmq_data:
+  postgres_data:
+  portainer_data:
+  challenge_files:    # uploaded CTF files for scenario-service
+  resource_terraform: # per-resource terraform state for TerraformDriver
+  opensearch_data:    # Data & Logging unified store (F11/F12)
+  prometheus_data:    # Prometheus TSDB
+  grafana_data:       # Grafana state (dashboards are provisioned, this is the rest)
+
+networks:
+  sor_net:
+    name: sor_net
+    driver: bridge
+  sor_docker_api:
+    # Scenario Management ↔ Docker socket proxy only; no external route.
+    name: sor_docker_api
+    driver: bridge
+    internal: true
