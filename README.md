@@ -6,7 +6,7 @@ containers on a single host. It provides user and role management, CTF-style cha
 isolated multi-container lab exercises reached over a per-trainee WireGuard VPN, scoring,
 monitoring and an audit log.
 
-**PlantHexLab** is only the name of this prototype. It is not a product; it is one
+**PlantHex-Labs** is only the name of this prototype. It is not a product; it is one
 example of how a SOR can be built from its requirements. The repository shows that path
 step by step, so that others can follow it to build their own SOR prototypes (see
 [Building a SOR prototype](#building-a-sor-prototype)).
